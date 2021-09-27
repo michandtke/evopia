@@ -1,5 +1,7 @@
+import 'package:evopia/evopia_styles.dart';
 import 'package:flutter/material.dart';
 
+import 'event_entry.dart';
 import 'event_provider.dart';
 
 void main() {
@@ -51,7 +53,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  var events = new EventProvider().provideEvents();
+  var events = EventProvider().provideEvents();
+  var index = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -99,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(
-              children: events.map((e) => Text(e.name)).toList(),
+              children: events.map((e) => EventEntry(event: e, color: _color(index++))).toList(),
             ),
             const Text(
               'You have pushed the button this many times:',
@@ -117,5 +120,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Color _color(int index) {
+    if (index % 2 == 0)
+      return EvopiaStyles.entryColor;
+    return EvopiaStyles.alternateEntryColor;
   }
 }
