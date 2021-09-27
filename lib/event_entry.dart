@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'event.dart';
+import 'tag_entry.dart';
 
 class EventEntry extends StatelessWidget {
 
@@ -38,17 +39,7 @@ class EventEntry extends StatelessWidget {
 
   Widget tags(Event event) {
     return Row(
-      children: event.tags.map((e) => tag(e)).toList(),
+      children: event.tags.map((t) => TagEntry(name: t)).toList(),
     );
-  }
-
-  Widget tag(String one) {
-    return Container(
-      padding:const EdgeInsets.all(4.0),
-        child: Text(one),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: Colors.grey.shade200
-      ));
   }
 }
