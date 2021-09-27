@@ -22,7 +22,7 @@ class EventEntry extends StatelessWidget {
               fontSize: 20,
             )),
         Text(event.description),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(dateAndTime(event)),
           Text(event.place),
@@ -43,6 +43,12 @@ class EventEntry extends StatelessWidget {
   }
 
   Widget tag(String one) {
-    return Text(one);
+    return Container(
+      padding:const EdgeInsets.all(4.0),
+        child: Text(one),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          color: Colors.grey.shade200
+      ));
   }
 }
