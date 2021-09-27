@@ -38,13 +38,27 @@ class _EventListState extends State<EventList> {
     return widget.events.where((element) => element.tags.where((t) => appliedFilters.contains(t)).isNotEmpty).toList();
   }
 
-  Row filters() {
-    List<String> allFilters = widget.events.expand((e) => e.tags).toList();
-    List<Widget> tags = allFilters.map((e) => TagEntry(name: e)).toList();
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: tags
-    );
+  Widget filters() {
+    Set<String> allFilters = widget.events.expand((e) => e.tags).toSet();
+    List<Widget> tags = allFilters.map((e) => tagButton(e)).toList();
+    return Wrap(children: tags);
+  }
+
+  Widget tagButton(String name) {
+    return MaterialButton(child: TagEntry(name: name, color: appliedFilters.contains(name) ? EvopiaStyles.tagChosenColor : EvopiaStyles.tagDefaultColor),
+        onPressed: () {
+      if (appliedFilters.contains(name)) {
+        setState(() {
+          appliedFilters =  appliedFilters.where((element) => element != name).toList();
+        });
+      } else {
+        setState(() {
+          List<String> newFilters = appliedFilters.toList();
+          newFilters.add(name);
+          appliedFilters = newFilters.toList();
+        });
+      }
+    });
   }
 
   Widget createEntry(Event event) {
