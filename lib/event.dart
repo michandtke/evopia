@@ -7,5 +7,12 @@ class Event {
   final String place;
   final List<String> tags;
 
-  Event(this.name, this.id, this.description, this.date, this.time, this.tags, this.place);
+  Event({
+    required this.name,
+    required this.id,
+    required this.description,
+    required this.date,
+    required this.time,
+    required this.tags,
+    required this.place});
 }
