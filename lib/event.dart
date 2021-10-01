@@ -1,5 +1,4 @@
 class Event {
-  final String id;
   final String name;
   final String description;
   final String date;
@@ -9,7 +8,6 @@ class Event {
 
   Event({
     required this.name,
-    required this.id,
     required this.description,
     required this.date,
     required this.time,

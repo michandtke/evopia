@@ -35,10 +35,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<List<Event>> eventsFuture = EventStore().get();
 
   @override
   Widget build(BuildContext context) {
+    Future<List<Event>> eventsFuture = EventStore().get();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -66,7 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _addEvent(Event newEvent) async {
-    await EventStore().add(newEvent);
+    var response = await EventStore().add(newEvent);
+    print("${response.statusCode}");
+    print(response.body);
     setState(() {});
   }
 }

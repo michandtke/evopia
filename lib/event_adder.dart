@@ -14,7 +14,6 @@ class EventAdder extends StatefulWidget {
 class _EventAdderState extends State<EventAdder> {
   final _formKey = GlobalKey<FormState>();
 
-  final idController = TextEditingController();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final dateController = TextEditingController();
@@ -36,7 +35,6 @@ class _EventAdderState extends State<EventAdder> {
 
   @override
   void dispose() {
-    idController.dispose();
     nameController.dispose();
     descriptionController.dispose();
     dateController.dispose();
@@ -51,7 +49,6 @@ class _EventAdderState extends State<EventAdder> {
       key: _formKey,
       child: Column(
         children: [
-          _field(idController, 'id'),
           _field(nameController, 'name'),
           _field(descriptionController, 'description'),
           _field(dateController, 'date'),
@@ -66,7 +63,6 @@ class _EventAdderState extends State<EventAdder> {
                 );
                 var event = Event(
                   name: nameController.text,
-                  id: idController.text,
                   description: descriptionController.text,
                   date: dateController.text,
                   time: timeController.text,

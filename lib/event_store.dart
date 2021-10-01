@@ -2,15 +2,27 @@ import 'package:evopia/event.dart';
 
 import 'dart:convert';
 
-import 'package:http/http.dart' show Client;
+import 'package:http/http.dart' show Client, Response;
 
 class EventStore {
   final Client _client = Client();
   final _baseUrl = Uri.parse('https://XXX.com/events');
 
-  Future<void> add(Event event) {
-    //_events.add(event);
-    return Future.value();
+  Future<Response> add(Event event) {
+    Map data = {
+      'name': event.name,
+      'description': event.description,
+      'date': event.date,
+      'time': event.time,
+      'place': event.place,
+      'tags': event.tags.join(',')
+    };
+    var body = json.encode(data);
+
+    return _client.post(_baseUrl,
+        headers: {"Content-Type": "application/json"},
+        body: body
+    );
   }
 
   Future<List<Event>> get() async {
@@ -24,7 +36,7 @@ class EventStore {
       var place = entry['place'] ?? "";
       var tags = entry['tags'].split(",") ?? List.empty();
 
-      return Event(id: "-1", name: name, description: description, date: date, time: time, place: place, tags: tags);
+      return Event(name: name, description: description, date: date, time: time, place: place, tags: tags);
     });
     return events.toList();
   }
