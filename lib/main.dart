@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var store = EventStore();
+  Future<List<Event>> eventsFuture = EventStore().get();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: EventList(events: store.get()),
+      body: FutureBuilder(
+        future: eventsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+            return EventList(events: snapshot.data as List<Event>);
+          }
+          if (snapshot.hasError) return Text("${snapshot.error}");
+          return const CircularProgressIndicator();
+        }
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddEvent,
         tooltip: 'Add event',
@@ -56,9 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => EventAdder(fnAddEvent: _addEvent)));
   }
 
-  void _addEvent(Event newEvent) {
-    setState(() {
-      store.add(newEvent);
-    });
+  void _addEvent(Event newEvent) async {
+    await EventStore().add(newEvent);
+    setState(() {});
   }
 }

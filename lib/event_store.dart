@@ -1,19 +1,31 @@
 import 'package:evopia/event.dart';
 
+import 'dart:convert';
+
+import 'package:http/http.dart' show Client;
+
 class EventStore {
-  final List<Event> _events = List.from([event1, event2, event3]);
+  final Client _client = Client();
+  final _baseUrl = Uri.parse('https://XXX.com/events');
 
-  void add(Event event) {
-    _events.add(event);
+  Future<void> add(Event event) {
+    //_events.add(event);
+    return Future.value();
   }
 
-  List<Event> get() {
-    return _events.toList();
+  Future<List<Event>> get() async {
+    var content = await _client.get(_baseUrl);
+    List<dynamic> json = jsonDecode(content.body)['_embedded']['events'];
+    var events = json.where((entry) => entry is Map).map((entry) {
+      var name = entry['name'] ?? "";
+      var description = entry['description'] ?? "";
+      var date = entry['date'] ?? "";
+      var time = entry['time'] ?? "";
+      var place = entry['place'] ?? "";
+      var tags = entry['tags'].split(",") ?? List.empty();
+
+      return Event(id: "-1", name: name, description: description, date: date, time: time, place: place, tags: tags);
+    });
+    return events.toList();
   }
-
-
-  // DUMMY DATA
-  static Event event1 = Event(name: "Happening", id: "1", description: "This is gonna be fun!", date: "tomorrow", time: "noon", tags: List.of(["GetTogether", "People"]), place: "garden");
-  static Event event2 = Event(name: "Cinema", id: "2", description: "Let's watch Dune together", date: "day after tomorrow", time: "8 PM", tags: List.of(["Cinema", "Watching"]), place: "Alhambra");
-  static Event event3 = Event(name: "Bouldering", id: "3", description: "I'm going - feel free to join", date: "today!", time: "all day!", tags: List.of(["Sport", "Climbing", "People"]), place: "Südbloc");
 }
