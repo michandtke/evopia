@@ -20,15 +20,17 @@ class EventStore {
     var body = json.encode(data);
 
     return _client.post(_baseUrl,
-        headers: {"Content-Type": "application/json"},
+        headers: {"Authorization": "Basic XXX", "Content-Type": "application/json"},
         body: body
     );
   }
 
   Future<List<Event>> get() async {
-    var content = await _client.get(_baseUrl);
+    var content = await _client.get(_baseUrl,
+        headers: {"Authorization": "Basic XXX"}
+    );
     List<dynamic> json = jsonDecode(content.body)['_embedded']['events'];
-    var events = json.where((entry) => entry is Map).map((entry) {
+    var events = json.whereType<Map>().map((entry) {
       var name = entry['name'] ?? "";
       var description = entry['description'] ?? "";
       var date = entry['date'] ?? "";
