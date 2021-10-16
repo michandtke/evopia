@@ -75,7 +75,7 @@ class _EventListState extends State<EventList> {
   }
 
   Widget createEntry(Event event) {
-    return EventEntry(event: event, color: _color(index++));
+    return EventEntry(event: event, color: _color(index++), context: context);
   }
 
   Color _color(int index) {

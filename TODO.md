@@ -1,6 +1,7 @@
  - ~~Make it a real list, with swiping and stuff~~
  - ~~Make entries deletable by swiping left~~
  - Open one entry, see all the details
+ - Add a edit mode for an entry
  - Make times and dates pickable with standard stuff
  - Show the place via Google Maps or shit
  - Make the place pickable with Google Maps or shit
