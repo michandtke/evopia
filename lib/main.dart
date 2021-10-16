@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         future: eventsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-            return EventList(events: snapshot.data as List<Event>);
+            return EventList(events: snapshot.data as List<Event>, deleteEvent: _deleteEvent);
           }
           if (snapshot.hasError) return Text("${snapshot.error}");
           return const CircularProgressIndicator();
@@ -67,6 +67,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _addEvent(Event newEvent) async {
     var response = await EventStore().add(newEvent);
+    print("${response.statusCode}");
+    print(response.body);
+    setState(() {});
+  }
+
+  void _deleteEvent(Event toDelete) async {
+    var response = await EventStore().delete(toDelete);
     print("${response.statusCode}");
     print(response.body);
     setState(() {});

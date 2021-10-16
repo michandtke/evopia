@@ -7,8 +7,9 @@ import 'tag_entry.dart';
 
 class EventList extends StatefulWidget {
   final List<Event> events;
+  final Function deleteEvent;
 
-  const EventList({Key? key, required this.events}) : super(key: key);
+  const EventList({Key? key, required this.events, required this.deleteEvent}) : super(key: key);
 
   @override
   State<EventList> createState() => _EventListState();
@@ -31,15 +32,12 @@ class _EventListState extends State<EventList> {
             itemCount: shownEvents.length,
             itemBuilder: (BuildContext ctxt, int index) {
               var entry = shownEvents[index];
-              var widget = createEntry(entry);
+              var entryWidget = createEntry(entry);
 
               return Dismissible(key: Key(entry.hashCode.toString()),
-                  child: widget,
+                  child: entryWidget,
               onDismissed: (direction) {
-                // setState(() {
-                //
-                // });
-                // Then show a snackbar.
+                widget.deleteEvent(entry);
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text('${entry.name} dismissed')));
               });
