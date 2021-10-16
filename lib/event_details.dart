@@ -85,7 +85,7 @@ class _EventDetailsState extends State<EventDetails> {
 
   Widget dateAndTime() {
     return Text(
-      "${widget.event.date} - ${widget.event.time}",
+      "${widget.event.from} - ${widget.event.to}",
       style: const TextStyle(color: Colors.white, fontSize: 20.0),
     );
   }

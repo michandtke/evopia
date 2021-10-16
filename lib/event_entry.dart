@@ -37,7 +37,7 @@ class EventEntry extends StatelessWidget {
   }
 
   String dateAndTime() {
-    return "${event.date} - ${event.time}";
+    return "${event.from} - ${event.to}";
   }
 
   Widget tags() {

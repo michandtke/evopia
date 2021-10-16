@@ -13,8 +13,8 @@ class EventStore {
     Map data = {
       'name': event.name,
       'description': event.description,
-      'date': event.date,
-      'time': event.time,
+      'date': event.from,
+      'time': event.to,
       'place': event.place,
       'tags': event.tags.join(',')
     };
@@ -35,12 +35,12 @@ class EventStore {
       var id = entry['id'] ?? "";
       var name = entry['name'] ?? "";
       var description = entry['description'] ?? "";
-      var date = entry['date'] ?? "";
-      var time = entry['time'] ?? "";
+      var from = entry['date'] ?? "";
+      var to = entry['time'] ?? "";
       var place = entry['place'] ?? "";
       var tags = entry['tags'].split(",") ?? List.empty();
 
-      return Event(id: id, name: name, description: description, date: date, time: time, place: place, tags: tags);
+      return Event(id: id, name: name, description: description, from: from, to: to, place: place, tags: tags);
     });
     return events.toList();
   }
