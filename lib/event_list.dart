@@ -27,8 +27,23 @@ class _EventListState extends State<EventList> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         filters(),
-        Column(children: shownEvents.map((e) => createEntry(e)).toList())
-      ]);
+        Expanded(child: ListView.builder(
+            itemCount: shownEvents.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              var entry = shownEvents[index];
+              var widget = createEntry(entry);
+
+              return Dismissible(key: Key(entry.hashCode.toString()),
+                  child: widget,
+              onDismissed: (direction) {
+                // setState(() {
+                //
+                // });
+                // Then show a snackbar.
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('${entry.name} dismissed')));
+              });
+    }))]);
   }
 
   List<Event> calcShownEvents() {

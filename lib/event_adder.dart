@@ -62,6 +62,7 @@ class _EventAdderState extends State<EventAdder> {
                   SnackBar(content: Text('Added event ${nameController.text}'))
                 );
                 var event = Event(
+                  id: -1,
                   name: nameController.text,
                   description: descriptionController.text,
                   date: dateController.text,

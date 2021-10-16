@@ -7,6 +7,7 @@ import 'package:http/http.dart' show Client, Response;
 class EventStore {
   final Client _client = Client();
   final _baseUrl = Uri.parse('https://XXX.com/events');
+  final _singleUrl = (id) => Uri.parse('https://XXX.com/events/$id');
 
   Future<Response> add(Event event) {
     Map data = {
@@ -31,6 +32,7 @@ class EventStore {
     );
     List<dynamic> json = jsonDecode(content.body)['_embedded']['events'];
     var events = json.whereType<Map>().map((entry) {
+      var id = entry['id'] ?? "";
       var name = entry['name'] ?? "";
       var description = entry['description'] ?? "";
       var date = entry['date'] ?? "";
@@ -38,8 +40,14 @@ class EventStore {
       var place = entry['place'] ?? "";
       var tags = entry['tags'].split(",") ?? List.empty();
 
-      return Event(name: name, description: description, date: date, time: time, place: place, tags: tags);
+      return Event(id: id, name: name, description: description, date: date, time: time, place: place, tags: tags);
     });
     return events.toList();
+  }
+
+  Future<Response> delete(Event event) {
+    return _client.delete(_singleUrl(event.id),
+        headers: {"Authorization": "Basic XXX", "Content-Type": "application/json"}
+    );
   }
 }
