@@ -9,3 +9,4 @@
  - Possibility for new Tags
  - ~~Use URL for Images~~
  - Make image pickable (need S3 or something for this to work)
+ - Sort events by starting time
