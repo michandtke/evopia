@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
             return EventList(events: snapshot.data as List<Event>, deleteEvent: _deleteEvent);
           }
-          if (snapshot.hasError) return Text("${snapshot.error}");
+          if (snapshot.hasError) return Text("Unfortunately, an error: ${snapshot.error}");
           return const CircularProgressIndicator();
         }
       ),

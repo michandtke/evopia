@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'date_formatter.dart';
 import 'event.dart';
 import 'event_details.dart';
 import 'tag_entry.dart';
@@ -37,7 +38,7 @@ class EventEntry extends StatelessWidget {
   }
 
   String dateAndTime() {
-    return "${event.from} - ${event.to}";
+    return DateFormatter().formatDates(event.from, event.to);
   }
 
   Widget tags() {

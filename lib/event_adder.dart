@@ -62,8 +62,8 @@ class _EventAdderState extends State<EventAdder> {
                       id: -1,
                       name: nameController.text,
                       description: descriptionController.text,
-                      from: fromController.text,
-                      to: toController.text,
+                      from: DateTime.parse(fromController.text),
+                      to: DateTime.parse(toController.text),
                       place: placeController.text,
                       tags: tagsController.text.split(','));
                   widget.fnAddEvent(event);

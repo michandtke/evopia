@@ -13,8 +13,8 @@ class EventStore {
     Map data = {
       'name': event.name,
       'description': event.description,
-      'date': event.from,
-      'time': event.to,
+      'date': event.from.toIso8601String(),
+      'time': event.to.toIso8601String(),
       'place': event.place,
       'tags': event.tags.join(',')
     };
@@ -32,11 +32,11 @@ class EventStore {
     );
     List<dynamic> json = jsonDecode(content.body)['_embedded']['events'];
     var events = json.whereType<Map>().map((entry) {
-      var id = entry['id'] ?? "";
+      var id = entry['id'] ?? -1;
       var name = entry['name'] ?? "";
       var description = entry['description'] ?? "";
-      var from = entry['date'] ?? "";
-      var to = entry['time'] ?? "";
+      var from = DateTime.parse(entry['date']);
+      var to = DateTime.parse(entry['time']);
       var place = entry['place'] ?? "";
       var tags = entry['tags'].split(",") ?? List.empty();
 

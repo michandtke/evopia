@@ -1,6 +1,7 @@
 import 'package:evopia/tag_entry.dart';
 import 'package:flutter/material.dart';
 
+import 'date_formatter.dart';
 import 'event.dart';
 
 class EventDetails extends StatefulWidget {
@@ -85,7 +86,7 @@ class _EventDetailsState extends State<EventDetails> {
 
   Widget dateAndTime() {
     return Text(
-      "${widget.event.from} - ${widget.event.to}",
+      DateFormatter().formatDates(widget.event.from, widget.event.to),
       style: const TextStyle(color: Colors.white, fontSize: 20.0),
     );
   }

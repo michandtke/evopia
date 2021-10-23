@@ -2,8 +2,8 @@ class Event {
   final int id;
   final String name;
   final String description;
-  final String from;
-  final String to;
+  final DateTime from;
+  final DateTime to;
   final String place;
   final List<String> tags;
 
