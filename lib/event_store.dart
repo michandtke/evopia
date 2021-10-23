@@ -16,7 +16,8 @@ class EventStore {
       'date': event.from.toIso8601String(),
       'time': event.to.toIso8601String(),
       'place': event.place,
-      'tags': event.tags.join(',')
+      'tags': event.tags.join(','),
+      'image': event.image
     };
     var body = json.encode(data);
 
@@ -39,8 +40,9 @@ class EventStore {
       var to = DateTime.parse(entry['time']);
       var place = entry['place'] ?? "";
       var tags = entry['tags'].split(",") ?? List.empty();
+      var image = entry['image'] ?? "";
 
-      return Event(id: id, name: name, description: description, from: from, to: to, place: place, tags: tags);
+      return Event(id: id, name: name, description: description, from: from, to: to, place: place, tags: tags, image: image);
     });
     return events.toList();
   }

@@ -22,6 +22,7 @@ class _EventAdderState extends State<EventAdder> {
       text: DateTime.now().add(const Duration(minutes: 30)).toString());
   final placeController = TextEditingController();
   final tagsController = TextEditingController();
+  final imageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,7 @@ class _EventAdderState extends State<EventAdder> {
     toController.dispose();
     placeController.dispose();
     tagsController.dispose();
+    imageController.dispose();
     super.dispose();
   }
 
@@ -52,6 +54,7 @@ class _EventAdderState extends State<EventAdder> {
           _timePickerField(fromController, 'from ${fromController.text}'),
           _timePickerField(toController, 'to ${toController.text}'),
           _field(placeController, 'place'),
+          _field(imageController, 'image'),
           _field(tagsController, 'tags'),
           ElevatedButton(
               onPressed: () {
@@ -65,7 +68,8 @@ class _EventAdderState extends State<EventAdder> {
                       from: DateTime.parse(fromController.text),
                       to: DateTime.parse(toController.text),
                       place: placeController.text,
-                      tags: tagsController.text.split(','));
+                      tags: tagsController.text.split(','),
+                      image: imageController.text);
                   widget.fnAddEvent(event);
                   Navigator.pop(context);
                 }

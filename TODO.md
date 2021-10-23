@@ -7,4 +7,5 @@
  - Make the place pickable with Google Maps or shit
  - DropDown for all known Tags
  - Possibility for new Tags
- - Make image pickable
+ - ~~Use URL for Images~~
+ - Make image pickable (need S3 or something for this to work)

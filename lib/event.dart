@@ -5,6 +5,7 @@ class Event {
   final DateTime from;
   final DateTime to;
   final String place;
+  final String image;
   final List<String> tags;
 
   Event({
@@ -14,5 +15,6 @@ class Event {
     required this.from,
     required this.to,
     required this.tags,
-    required this.place});
+    required this.place,
+    required this.image});
 }

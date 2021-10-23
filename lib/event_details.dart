@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evopia/tag_entry.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,12 @@ class EventDetails extends StatefulWidget {
 }
 
 class _EventDetailsState extends State<EventDetails> {
+
+  var fontColor = Colors.black;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Event details"),
-        ),
-        body: body());
+    return Scaffold(body: body());
   }
 
   Widget body() {
@@ -34,20 +34,10 @@ class _EventDetailsState extends State<EventDetails> {
     return Stack(
       children: <Widget>[
         Container(
-            padding: const EdgeInsets.only(left: 10.0),
             height: MediaQuery.of(context).size.height * 0.5,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("drive-steering-wheel.jpg"),
-                fit: BoxFit.cover,
-              ),
-            )),
-        Container(
-            height: MediaQuery.of(context).size.height * 0.5,
-            padding: const EdgeInsets.all(40.0),
+            padding: const EdgeInsets.only(left: 40.0, right: 40.0, bottom: 40.0, top: 60.0),
             width: MediaQuery.of(context).size.width,
-            decoration:
-                const BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
+            decoration: backgroundDecoration(),
             child: Column(
               children: [
                 nameWidget(),
@@ -55,7 +45,8 @@ class _EventDetailsState extends State<EventDetails> {
                 const Expanded(
                   child: Text(""),
                 ),
-                tags()
+                tags(),
+
               ],
             )),
         Positioned(
@@ -65,17 +56,31 @@ class _EventDetailsState extends State<EventDetails> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(Icons.arrow_back, color: Colors.white),
+            child: const Icon(Icons.arrow_back, color: Colors.black),
           ),
         )
       ],
     );
   }
 
+  BoxDecoration backgroundDecoration() {
+    if (widget.event.image.isEmpty) {
+      return const BoxDecoration(color: Color.fromRGBO(
+          182, 199, 196, 0.5019607843137255));
+    }
+    return BoxDecoration(
+      image: DecorationImage(
+        image: CachedNetworkImageProvider(widget.event.image),
+        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+        fit: BoxFit.cover
+      )
+    );
+  }
+
   Widget nameWidget() {
     return Text(
       widget.event.name,
-      style: const TextStyle(color: Colors.white, fontSize: 45.0),
+      style: TextStyle(color: fontColor, fontSize: 45.0),
     );
   }
 
@@ -87,7 +92,7 @@ class _EventDetailsState extends State<EventDetails> {
   Widget dateAndTime() {
     return Text(
       DateFormatter().formatDates(widget.event.from, widget.event.to),
-      style: const TextStyle(color: Colors.white, fontSize: 20.0),
+      style: TextStyle(color: fontColor, fontSize: 20.0),
     );
   }
 
