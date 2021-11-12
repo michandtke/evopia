@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'event.dart';
 import 'event_adder.dart';
 import 'event_store.dart';
+import 'loginscreen/login_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Events'),
+      //home: const MyHomePage(title: 'Events'),
+      home: LoginView(),
     );
   }
 }
