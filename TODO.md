@@ -1,12 +1,10 @@
- - ~~Make it a real list, with swiping and stuff~~
- - ~~Make entries deletable by swiping left~~
- - ~~Open one entry, see all the details~~
  - Add a edit mode for an entry
- - ~~Make times and dates pickable with standard stuff~~
  - Show the place via Google Maps or shit
  - Make the place pickable with Google Maps or shit
  - DropDown for all known Tags
  - Possibility for new Tags
- - ~~Use URL for Images~~
  - Make image pickable (need S3 or something for this to work)
  - Sort events by starting time
+ - Logout
+ - Register per mail
+ - Reset password link
