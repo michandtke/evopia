@@ -55,9 +55,19 @@ class _StartEndDurationPickerState extends State<StartEndDurationPicker> {
           date.timeZoneOffset.inHours.toString());
     }, onConfirm: (date) {
       cb(date);
-      setState(() {});
+      var newDuration = _calculateNewDuration();
+      setState(() {
+        durationController.text = newDuration;
+      });
       print('confirm $date');
     }, currentTime: DateTime.tryParse(currentTime) ?? DateTime.now());
+  }
+
+  String _calculateNewDuration() {
+    var from = DateTime.parse(widget.fromController.text);
+    var to = DateTime.parse(widget.toController.text);
+    var newDuration = to.difference(from);
+    return newDuration.toHoursMinutes();
   }
 
   Widget _durationField() {
