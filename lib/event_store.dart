@@ -9,7 +9,7 @@ class EventStore {
   final _baseUrl = Uri.parse('https://XXX.com/events');
   final _singleUrl = (id) => Uri.parse('https://XXX.com/events/$id');
 
-  Future<Response> add(Event event) {
+  Future<Response> add(Event event, username, password) {
     Map data = {
       'name': event.name,
       'description': event.description,
@@ -20,16 +20,17 @@ class EventStore {
       'image': event.image
     };
     var body = json.encode(data);
-
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
     return _client.post(_baseUrl,
-        headers: {"Authorization": "Basic XXX", "Content-Type": "application/json"},
+        headers: {"Authorization": basicAuth, "Content-Type": "application/json"},
         body: body
     );
   }
 
-  Future<List<Event>> get() async {
+  Future<List<Event>> get(username, password) async {
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
     var content = await _client.get(_baseUrl,
-        headers: {"Authorization": "Basic XXX"}
+        headers: {"Authorization": basicAuth}
     );
     List<dynamic> json = jsonDecode(content.body)['_embedded']['events'];
     var events = json.whereType<Map>().map((entry) {
@@ -47,9 +48,10 @@ class EventStore {
     return events.toList();
   }
 
-  Future<Response> delete(Event event) {
+  Future<Response> delete(Event event, username, password) {
+    String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
     return _client.delete(_singleUrl(event.id),
-        headers: {"Authorization": "Basic XXX", "Content-Type": "application/json"}
+        headers: {"Authorization": basicAuth, "Content-Type": "application/json"}
     );
   }
 }

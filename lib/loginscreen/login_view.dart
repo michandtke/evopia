@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'credentials_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -25,24 +28,31 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.only(top: 150),
-            child: Center(
-                child: Column(children: [
-              Text("Willkommen bei Mosaik"),
-              form(),
-              Text("Registrieren"),
-              Text("Password vergessen")
-            ]))));
+        body: Consumer<CredentialsModel>(
+            builder: (context, credentials, child) {
+              return body(credentials.loginIn);
+            }));
   }
 
-  Widget form() {
+  Padding body(void Function(String, String) loginIn) {
+    return Padding(
+          padding: const EdgeInsets.only(top: 150),
+          child: Center(
+              child: Column(children: [
+            Text("Willkommen bei Mosaik"),
+            form(loginIn),
+            Text("Registrieren"),
+            Text("Password vergessen")
+          ])));
+  }
+
+  Widget form(void Function(String, String) loginIn) {
     return Form(
       key: _formKey,
       child: Column(children: [
         usernameField(),
         passwordField(),
-        loginButton()
+        loginButton(loginIn)
       ])
     );
   }
@@ -61,7 +71,9 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget loginButton() {
-    return TextButton(onPressed: () {}, child: const Text("LOGIN"));
+  Widget loginButton(void Function(String, String) loginIn) {
+    return TextButton(onPressed: () {
+      loginIn(usernameController.text, passwordController.text);
+    }, child: const Text("LOGIN"));
   }
 }
