@@ -1,5 +1,5 @@
+import 'package:evopia/start_end_duration_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import 'event.dart';
 
@@ -17,9 +17,15 @@ class _EventAdderState extends State<EventAdder> {
 
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
-  final fromController = TextEditingController(text: DateTime.now().toString());
+  final fromController = TextEditingController(
+      text: DateTime.now()
+          .roundUp(delta: const Duration(minutes: 60))
+          .toString());
   final toController = TextEditingController(
-      text: DateTime.now().add(const Duration(minutes: 30)).toString());
+      text: DateTime.now()
+          .roundUp(delta: const Duration(minutes: 60))
+          .add(const Duration(minutes: 60))
+          .toString());
   final placeController = TextEditingController();
   final tagsController = TextEditingController();
   final imageController = TextEditingController();
@@ -51,8 +57,8 @@ class _EventAdderState extends State<EventAdder> {
         child: Column(children: [
           _field(nameController, 'name'),
           _field(descriptionController, 'description'),
-          _timePickerField(fromController, 'from ${fromController.text}'),
-          _timePickerField(toController, 'to ${toController.text}'),
+          StartEndDurationPicker(
+              fromController: fromController, toController: toController),
           _field(placeController, 'place'),
           _field(imageController, 'image'),
           _field(tagsController, 'tags'),
@@ -89,23 +95,12 @@ class _EventAdderState extends State<EventAdder> {
           return null;
         });
   }
+}
 
-  Widget _timePickerField(TextEditingController controller, String buttonText) {
-    return MaterialButton(
-        onPressed: () => showDateTimePicker(
-            (value) => controller.text = value.toString(), controller.text),
-        child: Text(buttonText));
-  }
-
-  void showDateTimePicker(Function cb, String currentTime) {
-    DatePicker.showDateTimePicker(context, showTitleActions: true,
-        onChanged: (date) {
-      print('change $date in time zone ' +
-          date.timeZoneOffset.inHours.toString());
-    }, onConfirm: (date) {
-      cb(date);
-      setState(() {});
-      print('confirm $date');
-    }, currentTime: DateTime.tryParse(currentTime) ?? DateTime.now());
+extension DateTimeExtension on DateTime {
+  DateTime roundUp({Duration delta = const Duration(days: 1)}) {
+    return DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch -
+        millisecondsSinceEpoch % delta.inMilliseconds +
+        delta.inMilliseconds);
   }
 }
