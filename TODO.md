@@ -8,3 +8,8 @@
  - Logout
  - Register per mail
  - Reset password link
+ - Add profile page
+   - Image
+   - Contact information
+ - Save preferred tags per user
+ - Make end date choosable either direct or by duration
