@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Future<List<Event>> eventsFuture = EventStore().get(
         widget.credentialsModel.username, widget.credentialsModel.password);
     return Scaffold(
-      body: Column(children: [customAppBar(), futureEventsList(eventsFuture)]),
+      body: Column(children: [customAppBar(), Expanded(child: futureEventsList(eventsFuture))]),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddEvent,
         tooltip: 'Add event',
