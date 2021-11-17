@@ -19,15 +19,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider(
+      create: (context) => CredentialsModel(),
+      child: MaterialApp(
       title: 'Evopia',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       //home: const MyHomePage(title: 'Events'),
-      home: ChangeNotifierProvider(
-        create: (context) => CredentialsModel(),
-        child: MainScreen(),
+      home: MainScreen(),
       ),
     );
   }
@@ -64,7 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Future<List<Event>> eventsFuture = EventStore().get(
         widget.credentialsModel.username, widget.credentialsModel.password);
     return Scaffold(
-      body: Column(children: [customAppBar(), Expanded(child: futureEventsList(eventsFuture))]),
+      body: Column(children: [
+        customAppBar(),
+        Expanded(child: futureEventsList(eventsFuture))
+      ]),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddEvent,
         tooltip: 'Add event',
@@ -109,9 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ChangeNotifierProvider(
-                create: (context) => widget.credentialsModel,
-                builder: (context, child) => ProfileView())));
+            builder: (context) => ProfileView()));
   }
 
   void _navigateToAddEvent() {
