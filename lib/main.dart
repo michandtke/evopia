@@ -7,6 +7,7 @@ import 'event_adder.dart';
 import 'event_store.dart';
 import 'loginscreen/credentials_model.dart';
 import 'loginscreen/login_view.dart';
+import 'profilescreen/profile_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,8 +39,9 @@ class MainScreen extends StatelessWidget {
     return Consumer<CredentialsModel>(
       builder: (context, credentials, child) {
         if (credentials.isLoggedIn()) {
-          return MyHomePage(
-              username: credentials.username, password: credentials.password);
+          // return MyHomePage(
+          //     username: credentials.username, password: credentials.password);
+          return ProfileView();
         }
         return const LoginView();
       },

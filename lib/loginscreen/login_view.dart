@@ -30,8 +30,17 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
         body: Consumer<CredentialsModel>(
             builder: (context, credentials, child) {
-              return body(credentials.loginIn);
+              return body(loginIn(credentials));
             }));
+  }
+
+  void Function(String, String) loginIn(CredentialsModel credentials) {
+    return (String username, String password) {
+      var tags = ["Sport", "Bouldern"];
+      var channels = ["0190111222333", "test@test.com", "INSTALINK"];
+      var image = "files/jeff_smaller.png";
+      credentials.loginIn(username, password, image, tags, channels);
+    };
   }
 
   Padding body(void Function(String, String) loginIn) {
