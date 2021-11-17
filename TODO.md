@@ -16,3 +16,5 @@
  - Adjust end date be start date + duration if new start date > old end date
  - Make duration some nicer widget to choose from
  - Keep login' alive
+ - Make password secure text input
+ - Add demo user on login page
