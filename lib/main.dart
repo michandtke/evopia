@@ -39,9 +39,8 @@ class MainScreen extends StatelessWidget {
     return Consumer<CredentialsModel>(
       builder: (context, credentials, child) {
         if (credentials.isLoggedIn()) {
-          // return MyHomePage(
-          //     username: credentials.username, password: credentials.password);
-          return ProfileView();
+          return MyHomePage(credentialsModel: credentials);
+          // return ProfileView();
         }
         return const LoginView();
       },
@@ -50,11 +49,10 @@ class MainScreen extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.username, required this.password})
+  const MyHomePage({Key? key, required this.credentialsModel})
       : super(key: key);
 
-  final String username;
-  final String password;
+  final CredentialsModel credentialsModel;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -63,31 +61,57 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    Future<List<Event>> eventsFuture =
-        EventStore().get(widget.username, widget.password);
+    Future<List<Event>> eventsFuture = EventStore().get(
+        widget.credentialsModel.username, widget.credentialsModel.password);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.username),
-      ),
-      body: FutureBuilder(
-          future: eventsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasData &&
-                snapshot.connectionState == ConnectionState.done) {
-              return EventList(
-                  events: snapshot.data as List<Event>,
-                  deleteEvent: _deleteEvent);
-            }
-            if (snapshot.hasError)
-              return Text("Unfortunately, an error: ${snapshot.error}");
-            return const CircularProgressIndicator();
-          }),
+      body: Column(children: [customAppBar(), futureEventsList(eventsFuture)]),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddEvent,
         tooltip: 'Add event',
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Widget customAppBar() {
+    return Padding(
+        padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Willkommen bei Mosaik"),
+            IconButton(
+                icon: Image.asset(widget.credentialsModel.image),
+                iconSize: 50,
+                onPressed: _navigateToProfilePage)
+          ],
+        ));
+  }
+
+  Center futureEventsList(Future<List<Event>> eventsFuture) {
+    return Center(
+        child: FutureBuilder(
+            future: eventsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.hasData &&
+                  snapshot.connectionState == ConnectionState.done) {
+                return EventList(
+                    events: snapshot.data as List<Event>,
+                    deleteEvent: _deleteEvent);
+              }
+              if (snapshot.hasError)
+                return Text("Unfortunately, an error: ${snapshot.error}");
+              return const CircularProgressIndicator();
+            }));
+  }
+
+  void _navigateToProfilePage() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ChangeNotifierProvider(
+                create: (context) => widget.credentialsModel,
+                builder: (context, child) => ProfileView())));
   }
 
   void _navigateToAddEvent() {
@@ -98,14 +122,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _addEvent(Event newEvent) async {
-    var response = await EventStore().add(newEvent, widget.username, widget.password);
+    var response = await EventStore().add(newEvent,
+        widget.credentialsModel.username, widget.credentialsModel.password);
     print("${response.statusCode}");
     print(response.body);
     setState(() {});
   }
 
   void _deleteEvent(Event toDelete) async {
-    var response = await EventStore().delete(toDelete, widget.username, widget.password);
+    var response = await EventStore().delete(toDelete,
+        widget.credentialsModel.username, widget.credentialsModel.password);
     print("${response.statusCode}");
     print(response.body);
     setState(() {});
