@@ -1,3 +1,4 @@
+import 'package:evopia/tags/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,7 @@ class _LoginViewState extends State<LoginView> {
 
   void Function(String, String) loginIn(CredentialsModel credentials) {
     return (String username, String password) {
-      var tags = ["Sport", "Bouldern"];
+      List<Tag> tags = [Tag(name: "Sport"), Tag(name: "Bouldern")];
       var channels = ["0190111222333", "test@test.com", "INSTALINK"];
       var image = "files/default_face.png";
       credentials.loginIn(username, password, image, tags, channels);
