@@ -23,6 +23,11 @@ class CredentialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeTag(Tag tag) {
+    tags.remove(tag);
+    notifyListeners();
+  }
+
   bool isLoggedIn() {
     return username.isNotEmpty && password.isNotEmpty;
   }

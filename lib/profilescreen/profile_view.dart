@@ -6,8 +6,9 @@ import 'package:provider/provider.dart';
 
 class ProfileView extends StatelessWidget {
   final void Function(Tag tag) addTag;
+  final void Function(Tag tag) removeTag;
 
-  ProfileView(this.addTag, {Key? key}) : super(key: key);
+  ProfileView(this.addTag, this.removeTag, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,19 @@ class ProfileView extends StatelessWidget {
 
   Widget tags(List<Tag> tags) {
     return Column(children: [
-      ...tags.map((tag) => Text(tag.name)).toList(),
+      Wrap(
+          spacing: 8.0,
+          runSpacing: 4.0,
+          children: tags
+              .map((tag) => InputChip(
+                  avatar: const Icon(Icons.remove),
+                  label: Text(tag.name),
+                  onSelected: (sel) {
+                    if (sel) {
+                      removeTag(tag);
+                    }
+                  }))
+              .toList()),
       newTag(tags)
     ]);
   }
