@@ -38,7 +38,7 @@ class _LoginViewState extends State<LoginView> {
     return (String username, String password) {
       var tags = ["Sport", "Bouldern"];
       var channels = ["0190111222333", "test@test.com", "INSTALINK"];
-      var image = "files/jeff_smaller.png";
+      var image = "files/default_face.png";
       credentials.loginIn(username, password, image, tags, channels);
     };
   }
