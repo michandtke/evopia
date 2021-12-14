@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'event.dart';
 import 'event_entry.dart';
-import 'evopia_styles.dart';
+import '../evopia_styles.dart';
 import 'tag_entry.dart';
 
 class EventList extends StatefulWidget {

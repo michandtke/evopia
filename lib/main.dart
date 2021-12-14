@@ -1,10 +1,10 @@
-import 'package:evopia/event_list.dart';
+import 'package:evopia/events/event_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'event.dart';
-import 'event_adder.dart';
-import 'event_store.dart';
+import 'events/event.dart';
+import 'events/event_adder.dart';
+import 'events/event_store.dart';
 import 'loginscreen/credentials_model.dart';
 import 'loginscreen/login_view.dart';
 import 'profilescreen/profile_view.dart';

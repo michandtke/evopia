@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'evopia_styles.dart';
+import '../evopia_styles.dart';
 
 class TagEntry extends StatelessWidget {
   final String name;

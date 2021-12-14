@@ -1,4 +1,4 @@
-import 'package:evopia/start_end_duration_picker.dart';
+import 'package:evopia/events/start_end_duration_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'event.dart';

@@ -1,4 +1,4 @@
-import 'package:evopia/event.dart';
+import 'package:evopia/events/event.dart';
 
 import 'dart:convert';
 
