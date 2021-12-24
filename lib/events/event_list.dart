@@ -1,3 +1,4 @@
+import 'package:evopia/events/new_event_card.dart';
 import 'package:flutter/material.dart';
 
 import 'event.dart';
@@ -75,7 +76,8 @@ class _EventListState extends State<EventList> {
   }
 
   Widget createEntry(Event event) {
-    return EventEntry(event: event, color: _color(index++), context: context);
+    //return EventEntry(event: event, color: _color(index++), context: context);
+    return NewEventCard(event: event, context: context);
   }
 
   Color _color(int index) {
