@@ -99,7 +99,7 @@ class _EventDetailsState extends State<EventDetails> {
   Widget tags() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: widget.event.tags.map((t) => TagEntry(name: t)).toList(),
+      children: widget.event.tags.map((t) => TagEntry(name: t.name)).toList(),
     );
   }
 }

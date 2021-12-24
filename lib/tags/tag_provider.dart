@@ -15,4 +15,8 @@ class TagProvider {
     // return Future.value(tags);
     return tags;
   }
+
+  List<Tag> provideSome(List<String> some) {
+    return provide().where((tag) => some.contains(tag.name)).toList();
+  }
 }

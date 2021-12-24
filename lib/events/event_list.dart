@@ -1,87 +1,113 @@
 import 'package:evopia/events/new_event_card.dart';
+import 'package:evopia/tags/tag.dart';
 import 'package:flutter/material.dart';
 
 import 'event.dart';
-import 'event_entry.dart';
-import '../evopia_styles.dart';
-import 'tag_entry.dart';
 
 class EventList extends StatefulWidget {
   final List<Event> events;
   final Function deleteEvent;
+  final List<Tag> myTags;
 
-  const EventList({Key? key, required this.events, required this.deleteEvent}) : super(key: key);
+  const EventList({Key? key, required this.events, required this.deleteEvent, required this.myTags})
+      : super(key: key);
 
   @override
-  State<EventList> createState() => _EventListState();
+  State<EventList> createState() => _EventListState(List.from(myTags));
 }
 
 class _EventListState extends State<EventList> {
-  var index = 0;
-  List<String> appliedFilters = [];
+  List<Tag> appliedFilters;
+  bool allEvents = false;
+  bool oneEvent = false;
+  bool myEvents = true;
+
+  _EventListState(this.appliedFilters);
 
   @override
   Widget build(BuildContext context) {
     List<Event> shownEvents = calcShownEvents();
 
-    return
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        filters(),
-        Expanded(child: ListView.builder(
-            itemCount: shownEvents.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-              var entry = shownEvents[index];
-              var entryWidget = createEntry(entry);
-
-              return Dismissible(key: Key(entry.hashCode.toString()),
-                  child: entryWidget,
-              onDismissed: (direction) {
-                widget.deleteEvent(entry);
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('${entry.name} dismissed')));
-              });
-    }))]);
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      filters(),
+      Expanded(
+          child: ListView.builder(
+              itemCount: shownEvents.length,
+              itemBuilder: (BuildContext ctxt, int index) {
+                var entry = shownEvents[index];
+                var entryWidget = createEntry(entry);
+                return entryWidget;
+                // return Dismissible(
+                //     key: Key(entry.hashCode.toString()),
+                //     child: entryWidget,
+                //     onDismissed: (direction) {
+                //       widget.deleteEvent(entry);
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //           SnackBar(content: Text('${entry.name} dismissed')));
+                //     });
+              }))
+    ]);
   }
 
   List<Event> calcShownEvents() {
     if (appliedFilters.isEmpty) {
       return widget.events;
     }
-    return widget.events.where((element) => element.tags.where((t) => appliedFilters.contains(t)).isNotEmpty).toList();
+    return widget.events
+        .where((element) =>
+            element.tags.where((t) => appliedFilters.contains(t)).isNotEmpty)
+        .toList();
   }
 
   Widget filters() {
-    Set<String> allFilters = widget.events.expand((e) => e.tags).toSet();
-    List<Widget> tags = allFilters.map((e) => tagButton(e)).toList();
-    return Wrap(children: tags);
+    var chipMy = ChoiceChip(
+      label: const Text("My Events"),
+      onSelected: (y) => _selectMy(),
+      selected: myEvents,
+    );
+    var chipAll = ChoiceChip(
+      label: const Text("All Events"),
+      onSelected: (y) => _selectAll(),
+      selected: allEvents,
+    );
+    var chipChoose = ChoiceChip(
+      label: const Text("Choose one"),
+      onSelected: (y) => _selectOne(),
+      selected: oneEvent,
+    );
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [chipMy, chipAll, chipChoose]);
   }
 
-  Widget tagButton(String name) {
-    return MaterialButton(child: TagEntry(name: name, color: appliedFilters.contains(name) ? EvopiaStyles.tagChosenColor : EvopiaStyles.tagDefaultColor),
-        onPressed: () {
-      if (appliedFilters.contains(name)) {
-        setState(() {
-          appliedFilters =  appliedFilters.where((element) => element != name).toList();
-        });
-      } else {
-        setState(() {
-          List<String> newFilters = appliedFilters.toList();
-          newFilters.add(name);
-          appliedFilters = newFilters.toList();
-        });
-      }
+  void _selectAll() {
+    setState(() {
+      appliedFilters = List.empty();
+      myEvents = false;
+      allEvents = true;
+      oneEvent = false;
+    });
+  }
+
+  void _selectMy() {
+    setState(() {
+      appliedFilters = widget.myTags;
+      myEvents = true;
+      allEvents = false;
+      oneEvent = false;
+    });
+  }
+
+  void _selectOne() {
+    setState(() {
+      appliedFilters = List.empty();
+      myEvents = false;
+      allEvents = false;
+      oneEvent = true;
     });
   }
 
   Widget createEntry(Event event) {
-    //return EventEntry(event: event, color: _color(index++), context: context);
     return NewEventCard(event: event, context: context);
-  }
-
-  Color _color(int index) {
-    if (index % 2 == 0) return EvopiaStyles.entryColor;
-    return EvopiaStyles.alternateEntryColor;
   }
 }

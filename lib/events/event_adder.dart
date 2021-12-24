@@ -1,4 +1,5 @@
 import 'package:evopia/events/start_end_duration_picker.dart';
+import 'package:evopia/tags/tag_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'event.dart';
@@ -74,7 +75,8 @@ class _EventAdderState extends State<EventAdder> {
                       from: DateTime.parse(fromController.text),
                       to: DateTime.parse(toController.text),
                       place: placeController.text,
-                      tags: tagsController.text.split(','),
+                      tags: TagProvider()
+                          .provideSome(tagsController.text.split(',')),
                       image: imageController.text);
                   widget.fnAddEvent(event);
                   Navigator.pop(context);

@@ -43,7 +43,7 @@ class EventEntry extends StatelessWidget {
 
   Widget tags() {
     return Row(
-      children: event.tags.map((t) => TagEntry(name: t)).toList(),
+      children: event.tags.map((t) => TagEntry(name: t.name)).toList(),
     );
   }
 

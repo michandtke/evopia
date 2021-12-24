@@ -100,7 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   snapshot.connectionState == ConnectionState.done) {
                 return EventList(
                     events: snapshot.data as List<Event>,
-                    deleteEvent: _deleteEvent);
+                    deleteEvent: _deleteEvent,
+                myTags: widget.credentialsModel.tags);
               }
               if (snapshot.hasError)
                 return Text("Unfortunately, an error: ${snapshot.error}");

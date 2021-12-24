@@ -1,3 +1,5 @@
+import 'package:evopia/tags/tag.dart';
+
 class Event {
   final int id;
   final String name;
@@ -6,7 +8,7 @@ class Event {
   final DateTime to;
   final String place;
   final String image;
-  final List<String> tags;
+  final List<Tag> tags;
 
   Event({
     required this.id,
