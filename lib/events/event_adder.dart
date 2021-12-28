@@ -1,8 +1,16 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:evopia/events/start_end_duration_picker.dart';
+import 'package:evopia/images/event_image.dart';
 import 'package:evopia/tags/tag_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
+import '../picker.dart';
 import 'event.dart';
+
+import 'package:image_picker/image_picker.dart';
 
 class EventAdder extends StatefulWidget {
   final Function fnAddEvent;
@@ -29,7 +37,10 @@ class _EventAdderState extends State<EventAdder> {
           .toString());
   final placeController = TextEditingController();
   final tagsController = TextEditingController();
-  final imageController = TextEditingController();
+
+  String? imagePath = "";
+
+  ImagePicker picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +59,6 @@ class _EventAdderState extends State<EventAdder> {
     toController.dispose();
     placeController.dispose();
     tagsController.dispose();
-    imageController.dispose();
     super.dispose();
   }
 
@@ -61,13 +71,15 @@ class _EventAdderState extends State<EventAdder> {
           StartEndDurationPicker(
               fromController: fromController, toController: toController),
           _field(placeController, 'place'),
-          _field(imageController, 'image'),
+          _currentImage(),
+          _imagePicker(),
           _field(tagsController, 'tags'),
           ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('Added event ${nameController.text}')));
+                  var path = imagePath;
                   var event = Event(
                       id: -1,
                       name: nameController.text,
@@ -77,7 +89,7 @@ class _EventAdderState extends State<EventAdder> {
                       place: placeController.text,
                       tags: TagProvider()
                           .provideSome(tagsController.text.split(',')),
-                      image: imageController.text);
+                      image: path ?? "");
                   widget.fnAddEvent(event);
                   Navigator.pop(context);
                 }
@@ -96,6 +108,32 @@ class _EventAdderState extends State<EventAdder> {
           }
           return null;
         });
+  }
+
+  Widget _currentImage() {
+    var path = imagePath;
+    if (path != null && path.isNotEmpty) {
+      return EventImage(path: path);
+    }
+    return Container();
+  }
+
+  Widget _imagePicker() {
+    return ElevatedButton(onPressed: pickImage, child: Text("Pick image"));
+  }
+
+  void pickImage() async {
+    String? imagePath = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Picker()));
+    onImagePick(imagePath);
+  }
+
+  void onImagePick(String? path) async {
+    if (path != null) {
+      setState(() {
+        imagePath = path;
+      });
+    }
   }
 }
 

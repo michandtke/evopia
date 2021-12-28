@@ -1,4 +1,5 @@
 import 'package:evopia/events/event_list.dart';
+import 'package:evopia/picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,12 +23,11 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => CredentialsModel(),
       child: MaterialApp(
-      title: 'Evopia',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      //home: const MyHomePage(title: 'Events'),
-      home: MainScreen(),
+        title: 'Evopia',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MainScreen(),
       ),
     );
   }
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return EventList(
                     events: snapshot.data as List<Event>,
                     deleteEvent: _deleteEvent,
-                myTags: widget.credentialsModel.tags);
+                    myTags: widget.credentialsModel.tags);
               }
               if (snapshot.hasError)
                 return Text("Unfortunately, an error: ${snapshot.error}");
@@ -113,7 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ProfileView(widget.credentialsModel.addTag, widget.credentialsModel.removeTag)));
+            builder: (context) => ProfileView(widget.credentialsModel.addTag,
+                widget.credentialsModel.removeTag)));
   }
 
   void _navigateToAddEvent() {

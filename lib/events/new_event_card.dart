@@ -1,4 +1,5 @@
 import 'package:evopia/date_formatter.dart';
+import 'package:evopia/images/event_image.dart';
 import 'package:flutter/material.dart';
 
 import 'event.dart';
@@ -19,12 +20,9 @@ class NewEventCard extends StatelessWidget {
             child: Column(
           children: [
             Text(event.name, style: TextStyle(fontSize: 40)),
-            Icon(
-              Icons.airline_seat_recline_extra,
-              size: 120,
-            ),
+            EventImage(path: event.image, height: 120),
             Padding(
-                padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [_timeWidget(), _peopleWidget()]))
