@@ -4,26 +4,29 @@ import 'package:evopia/tags/tag_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../picker.dart';
+
 class ProfileView extends StatelessWidget {
   final void Function(Tag tag) addTag;
   final void Function(Tag tag) removeTag;
+  final void Function(String path) changeImage;
 
-  ProfileView(this.addTag, this.removeTag, {Key? key}) : super(key: key);
+  const ProfileView(this.addTag, this.removeTag, this.changeImage, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(body:
         Consumer<CredentialsModel>(builder: (context, credentials, child) {
-      return body(credentials);
+      return body(credentials, context);
     }));
   }
 
-  Widget body(CredentialsModel credentials) {
+  Widget body(CredentialsModel credentials, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(padding: EdgeInsets.only(top: 50)),
-        image(credentials.image),
+        image(credentials.image, context),
         Padding(
           padding: EdgeInsets.only(top: 30, left: 30),
           child: Text("Hello ${credentials.username}, nice to see you."),
@@ -39,8 +42,22 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget image(String path) {
-    return Center(child: Image.asset(path));
+  Widget image(String path, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        newImage(context);
+      }, // Image tapped
+      child: Center(child: Image.asset(path))
+    );
+  }
+
+  newImage(BuildContext context) async {
+    String? imagePath = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Picker(prefix: 'assets/profiles')));
+
+    if (imagePath != null) {
+      changeImage(imagePath);
+    }
   }
 
   Widget channels(List channels) {

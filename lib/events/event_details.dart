@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evopia/events/tag_entry.dart';
+import 'package:evopia/images/event_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../date_formatter.dart';
 import 'event.dart';
@@ -64,17 +66,29 @@ class _EventDetailsState extends State<EventDetails> {
   }
 
   BoxDecoration backgroundDecoration() {
+    print(widget.event.image);
+
     if (widget.event.image.isEmpty) {
       return const BoxDecoration(color: Color.fromRGBO(
           182, 199, 196, 0.5019607843137255));
     }
+
+    // PictureProvider p = EventImage(path: widget.event.image).x();
+
     return BoxDecoration(
       image: DecorationImage(
-        image: CachedNetworkImageProvider(widget.event.image),
+        image: AssetImage(widget.event.image),
         colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
         fit: BoxFit.cover
       )
     );
+    // return BoxDecoration(
+    //   image: DecorationImage(
+    //     image: CachedNetworkImageProvider(widget.event.image),
+    //     colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+    //     fit: BoxFit.cover
+    //   )
+    // );
   }
 
   Widget nameWidget() {

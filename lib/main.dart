@@ -113,8 +113,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => ProfileView(widget.credentialsModel.addTag,
-                widget.credentialsModel.removeTag)));
+            builder: (context) => ProfileView(
+                widget.credentialsModel.addTag,
+                widget.credentialsModel.removeTag,
+                widget.credentialsModel.changeImage)));
   }
 
   void _navigateToAddEvent() {

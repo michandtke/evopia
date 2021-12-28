@@ -124,7 +124,7 @@ class _EventAdderState extends State<EventAdder> {
 
   void pickImage() async {
     String? imagePath = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Picker()));
+        context, MaterialPageRoute(builder: (context) => const Picker(prefix: 'assets/icons')));
     onImagePick(imagePath);
   }
 

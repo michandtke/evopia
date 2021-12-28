@@ -9,7 +9,11 @@ class EventList extends StatefulWidget {
   final Function deleteEvent;
   final List<Tag> myTags;
 
-  const EventList({Key? key, required this.events, required this.deleteEvent, required this.myTags})
+  const EventList(
+      {Key? key,
+      required this.events,
+      required this.deleteEvent,
+      required this.myTags})
       : super(key: key);
 
   @override

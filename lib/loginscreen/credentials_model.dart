@@ -28,6 +28,11 @@ class CredentialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void changeImage(String path) {
+    image = path;
+    notifyListeners();
+  }
+
   bool isLoggedIn() {
     return username.isNotEmpty && password.isNotEmpty;
   }

@@ -1,16 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'images/event_image.dart';
 
 class Picker extends StatelessWidget {
+  final String prefix;
+
+  const Picker({Key? key, required this.prefix}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-            padding: EdgeInsets.only(top: 50, left: 10),
+            padding: const EdgeInsets.only(top: 50, left: 10),
             child: FutureBuilder(
                 future: assets(context),
                 builder: (context, snapshot) {
@@ -32,7 +35,7 @@ class Picker extends StatelessWidget {
     List<String> images = json
         .decode(manifestJson)
         .keys
-        .where((String key) => key.startsWith('files/icons'))
+        .where((String key) => key.startsWith(prefix))
         .toList();
     return images;
   }
