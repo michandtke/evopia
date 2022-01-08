@@ -9,17 +9,20 @@ import 'event.dart';
 class EventList extends StatefulWidget {
   final List<Event> events;
   final Function deleteEvent;
+  final Function upsertEvent;
   final CredentialsModel credentialsModel;
 
   const EventList(
       {Key? key,
       required this.events,
       required this.deleteEvent,
+      required this.upsertEvent,
       required this.credentialsModel})
       : super(key: key);
 
   @override
-  State<EventList> createState() => _EventListState(List.from(credentialsModel.tags));
+  State<EventList> createState() =>
+      _EventListState(List.from(credentialsModel.tags));
 }
 
 class _EventListState extends State<EventList> {
@@ -41,7 +44,7 @@ class _EventListState extends State<EventList> {
               itemCount: shownEvents.length,
               itemBuilder: (BuildContext ctxt, int index) {
                 var entry = shownEvents[index];
-                var entryWidget = createEntry(entry);
+                var entryWidget = eventEntry(entry);
                 return entryWidget;
                 // return Dismissible(
                 //     key: Key(entry.hashCode.toString()),
@@ -76,16 +79,18 @@ class _EventListState extends State<EventList> {
       onSelected: (y) => _selectAll(),
       selected: allEvents,
     );
-    return Padding(padding: const EdgeInsets.only(top: 30), child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [chipMy, chipAll, profileIconButton()]));
+    return Padding(
+        padding: const EdgeInsets.only(top: 30),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [chipMy, chipAll, profileIconButton()]));
   }
 
   Widget profileIconButton() {
     return IconButton(
-                icon: Image.asset(widget.credentialsModel.image),
-                iconSize: 50,
-                onPressed: _navigateToProfilePage);
+        icon: Image.asset(widget.credentialsModel.image),
+        iconSize: 50,
+        onPressed: _navigateToProfilePage);
   }
 
   void _navigateToProfilePage() {
@@ -116,7 +121,7 @@ class _EventListState extends State<EventList> {
     });
   }
 
-  Widget createEntry(Event event) {
-    return EventCard(event: event, context: context);
+  Widget eventEntry(Event event) {
+    return EventCard(event: event, upsertEvent: widget.upsertEvent, context: context);
   }
 }

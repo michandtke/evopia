@@ -7,9 +7,14 @@ import 'event_details.dart';
 
 class EventCard extends StatelessWidget {
   final Event event;
+  final Function upsertEvent;
   final BuildContext context;
 
-  const EventCard({Key? key, required this.event, required this.context})
+  const EventCard(
+      {Key? key,
+      required this.event,
+      required this.upsertEvent,
+      required this.context})
       : super(key: key);
 
   @override
@@ -45,7 +50,10 @@ class EventCard extends StatelessWidget {
   }
 
   void onTap() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => EventDetails(event: event)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                EventDetails(event: event, upsertEvent: upsertEvent)));
   }
 }

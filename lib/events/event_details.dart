@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 
 import '../date_formatter.dart';
 import 'event.dart';
+import 'event_adder.dart';
 
 class EventDetails extends StatefulWidget {
   final Event event;
+  final Function upsertEvent;
 
-  const EventDetails({Key? key, required this.event}) : super(key: key);
+  const EventDetails({Key? key, required this.event, required this.upsertEvent})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _EventDetailsState();
 }
 
 class _EventDetailsState extends State<EventDetails> {
-
   var fontColor = Colors.black;
 
   @override
@@ -34,7 +36,8 @@ class _EventDetailsState extends State<EventDetails> {
       children: <Widget>[
         Container(
             height: MediaQuery.of(context).size.height * 0.5,
-            padding: const EdgeInsets.only(left: 40.0, right: 40.0, bottom: 40.0, top: 60.0),
+            padding: const EdgeInsets.only(
+                left: 40.0, right: 40.0, bottom: 40.0, top: 60.0),
             width: MediaQuery.of(context).size.width,
             decoration: backgroundDecoration(),
             child: Column(
@@ -45,17 +48,32 @@ class _EventDetailsState extends State<EventDetails> {
                   child: Text(""),
                 ),
                 tags(),
-
               ],
             )),
         Positioned(
           left: 8.0,
           top: 60.0,
-          child: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.arrow_back, color: Colors.black),
+          child: Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(Icons.arrow_back, color: Colors.black),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EventAdder(
+                                fnAddEvent: widget.upsertEvent,
+                                oldEvent: widget.event,
+                              )));
+                },
+                child: const Icon(Icons.edit, color: Colors.black),
+              )
+            ],
           ),
         )
       ],
@@ -66,19 +84,18 @@ class _EventDetailsState extends State<EventDetails> {
     print(widget.event.image);
 
     if (widget.event.image.isEmpty) {
-      return const BoxDecoration(color: Color.fromRGBO(
-          182, 199, 196, 0.5019607843137255));
+      return const BoxDecoration(
+          color: Color.fromRGBO(182, 199, 196, 0.5019607843137255));
     }
 
     // PictureProvider p = EventImage(path: widget.event.image).x();
 
     return BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage(widget.event.image),
-        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-        fit: BoxFit.cover
-      )
-    );
+        image: DecorationImage(
+            image: AssetImage(widget.event.image),
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.3), BlendMode.dstATop),
+            fit: BoxFit.cover));
     // return BoxDecoration(
     //   image: DecorationImage(
     //     image: CachedNetworkImageProvider(widget.event.image),

@@ -83,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return EventList(
                     events: snapshot.data as List<Event>,
                     deleteEvent: _deleteEvent,
+                    upsertEvent: _addEvent,
                     credentialsModel: widget.credentialsModel);
               }
               if (snapshot.hasError) {
