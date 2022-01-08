@@ -1,4 +1,6 @@
 import 'package:evopia/events/new_event_card.dart';
+import 'package:evopia/loginscreen/credentials_model.dart';
+import 'package:evopia/profilescreen/profile_view.dart';
 import 'package:evopia/tags/tag.dart';
 import 'package:flutter/material.dart';
 
@@ -7,17 +9,17 @@ import 'event.dart';
 class EventList extends StatefulWidget {
   final List<Event> events;
   final Function deleteEvent;
-  final List<Tag> myTags;
+  final CredentialsModel credentialsModel;
 
   const EventList(
       {Key? key,
       required this.events,
       required this.deleteEvent,
-      required this.myTags})
+      required this.credentialsModel})
       : super(key: key);
 
   @override
-  State<EventList> createState() => _EventListState(List.from(myTags));
+  State<EventList> createState() => _EventListState(List.from(credentialsModel.tags));
 }
 
 class _EventListState extends State<EventList> {
@@ -33,7 +35,7 @@ class _EventListState extends State<EventList> {
     List<Event> shownEvents = calcShownEvents();
 
     return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      filters(),
+      filtersAndProfile(),
       Expanded(
           child: ListView.builder(
               itemCount: shownEvents.length,
@@ -63,7 +65,7 @@ class _EventListState extends State<EventList> {
         .toList();
   }
 
-  Widget filters() {
+  Widget filtersAndProfile() {
     var chipMy = ChoiceChip(
       label: const Text("My Events"),
       onSelected: (y) => _selectMy(),
@@ -74,14 +76,26 @@ class _EventListState extends State<EventList> {
       onSelected: (y) => _selectAll(),
       selected: allEvents,
     );
-    var chipChoose = ChoiceChip(
-      label: const Text("Choose one"),
-      onSelected: (y) => _selectOne(),
-      selected: oneEvent,
-    );
-    return Row(
+    return Padding(padding: const EdgeInsets.only(top: 30), child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [chipMy, chipAll, chipChoose]);
+        children: [chipMy, chipAll, profileIconButton()]));
+  }
+
+  Widget profileIconButton() {
+    return IconButton(
+                icon: Image.asset(widget.credentialsModel.image),
+                iconSize: 50,
+                onPressed: _navigateToProfilePage);
+  }
+
+  void _navigateToProfilePage() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProfileView(
+                widget.credentialsModel.addTag,
+                widget.credentialsModel.removeTag,
+                widget.credentialsModel.changeImage)));
   }
 
   void _selectAll() {
@@ -95,19 +109,10 @@ class _EventListState extends State<EventList> {
 
   void _selectMy() {
     setState(() {
-      appliedFilters = widget.myTags;
+      appliedFilters = widget.credentialsModel.tags;
       myEvents = true;
       allEvents = false;
       oneEvent = false;
-    });
-  }
-
-  void _selectOne() {
-    setState(() {
-      appliedFilters = List.empty();
-      myEvents = false;
-      allEvents = false;
-      oneEvent = true;
     });
   }
 

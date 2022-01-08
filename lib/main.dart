@@ -65,7 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
         widget.credentialsModel.username, widget.credentialsModel.password);
     return Scaffold(
       body: Column(children: [
-        customAppBar(),
         Expanded(child: futureEventsList(eventsFuture))
       ]),
       floatingActionButton: FloatingActionButton(
@@ -74,21 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  Widget customAppBar() {
-    return Padding(
-        padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text("Willkommen bei Mosaik"),
-            IconButton(
-                icon: Image.asset(widget.credentialsModel.image),
-                iconSize: 50,
-                onPressed: _navigateToProfilePage)
-          ],
-        ));
   }
 
   Center futureEventsList(Future<List<Event>> eventsFuture) {
@@ -101,22 +85,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 return EventList(
                     events: snapshot.data as List<Event>,
                     deleteEvent: _deleteEvent,
-                    myTags: widget.credentialsModel.tags);
+                    credentialsModel: widget.credentialsModel);
               }
-              if (snapshot.hasError)
+              if (snapshot.hasError) {
                 return Text("Unfortunately, an error: ${snapshot.error}");
+              }
               return const CircularProgressIndicator();
             }));
-  }
-
-  void _navigateToProfilePage() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ProfileView(
-                widget.credentialsModel.addTag,
-                widget.credentialsModel.removeTag,
-                widget.credentialsModel.changeImage)));
   }
 
   void _navigateToAddEvent() {
