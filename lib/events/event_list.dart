@@ -59,12 +59,18 @@ class _EventListState extends State<EventList> {
   }
 
   List<Event> calcShownEvents() {
-    if (appliedFilters.isEmpty) {
-      return widget.events;
+    final filtered = filterOutOtherEvents(widget.events, appliedFilters);
+    filtered.sort((e1, e2) => e1.from.compareTo(e2.from));
+    return filtered;
+  }
+
+  List<Event> filterOutOtherEvents(List<Event> allEvents, List<Tag> appliedFilter) {
+    if (appliedFilter.isEmpty) {
+      return allEvents;
     }
-    return widget.events
+    return allEvents
         .where((element) =>
-            element.tags.where((t) => appliedFilters.contains(t)).isNotEmpty)
+            element.tags.where((t) => appliedFilter.contains(t)).isNotEmpty)
         .toList();
   }
 
