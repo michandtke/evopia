@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return EventList(
                     events: snapshot.data as List<Event>,
                     deleteEvent: _deleteEvent,
-                    upsertEvent: _addEvent,
+                    upsertEvent: _upsertEvent,
                     credentialsModel: widget.credentialsModel);
               }
               if (snapshot.hasError) {
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
         context,
         MaterialPageRoute(
             builder: (context) => EventAdder(
-                  fnAddEvent: _addEvent,
+                  fnAddEvent: _upsertEvent,
                   oldEvent: _newEvent(),
                 )));
   }
@@ -117,8 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
         image: "");
   }
 
-  void _addEvent(Event newEvent) async {
-    var response = await EventStore().add(newEvent,
+  void _upsertEvent(Event newEvent) async {
+    var response = await EventStore().upsert(newEvent,
         widget.credentialsModel.username, widget.credentialsModel.password);
     print("${response.statusCode}");
     print(response.body);

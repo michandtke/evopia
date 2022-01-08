@@ -11,7 +11,7 @@ class EventStore {
   final _singleUrl =
       (id) => Uri.parse('https://XXX.com/events/$id');
 
-  Future<Response> add(Event event, username, password) {
+  Future<Response> upsert(Event event, username, password) {
     Map data = {
       'name': event.name,
       'description': event.description,
@@ -21,6 +21,9 @@ class EventStore {
       'tags': event.tags.join(','),
       'image': event.image
     };
+    if (event.id != -1) {
+      data.putIfAbsent('id', () => event.id);
+    }
     var body = json.encode(data);
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
