@@ -64,9 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Future<List<Event>> eventsFuture = EventStore().get(
         widget.credentialsModel.username, widget.credentialsModel.password);
     return Scaffold(
-      body: Column(children: [
-        Expanded(child: futureEventsList(eventsFuture))
-      ]),
+      body: Column(children: [Expanded(child: futureEventsList(eventsFuture))]),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToAddEvent,
         tooltip: 'Add event',
@@ -98,7 +96,24 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => EventAdder(fnAddEvent: _addEvent)));
+            builder: (context) => EventAdder(
+                  fnAddEvent: _addEvent,
+                  oldEvent: _newEvent(),
+                )));
+  }
+
+  Event _newEvent() {
+    return Event(
+        id: -1,
+        name: "",
+        description: "",
+        from: DateTime.now().roundUp(delta: const Duration(minutes: 60)),
+        to: DateTime.now()
+            .roundUp(delta: const Duration(minutes: 60))
+            .add(const Duration(minutes: 60)),
+        tags: List.empty(),
+        place: "",
+        image: "");
   }
 
   void _addEvent(Event newEvent) async {

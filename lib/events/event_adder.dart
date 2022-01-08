@@ -1,11 +1,7 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:evopia/events/start_end_duration_picker.dart';
 import 'package:evopia/images/event_image.dart';
 import 'package:evopia/tags/tag_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../picker.dart';
 import 'event.dart';
@@ -14,8 +10,10 @@ import 'package:image_picker/image_picker.dart';
 
 class EventAdder extends StatefulWidget {
   final Function fnAddEvent;
+  final Event oldEvent;
 
-  const EventAdder({Key? key, required this.fnAddEvent}) : super(key: key);
+  const EventAdder({Key? key, required this.fnAddEvent, required this.oldEvent})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _EventAdderState();
@@ -24,23 +22,30 @@ class EventAdder extends StatefulWidget {
 class _EventAdderState extends State<EventAdder> {
   final _formKey = GlobalKey<FormState>();
 
-  final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final fromController = TextEditingController(
-      text: DateTime.now()
-          .roundUp(delta: const Duration(minutes: 60))
-          .toString());
-  final toController = TextEditingController(
-      text: DateTime.now()
-          .roundUp(delta: const Duration(minutes: 60))
-          .add(const Duration(minutes: 60))
-          .toString());
-  final placeController = TextEditingController();
-  final tagsController = TextEditingController();
+  late TextEditingController _nameController;
+  late TextEditingController _descriptionController;
+  late TextEditingController _fromController;
+  late TextEditingController _toController;
+  late TextEditingController _placeController;
+  late TextEditingController _tagsController;
 
   String? imagePath = "";
 
   ImagePicker picker = ImagePicker();
+
+
+  @override
+  void initState() {
+    super.initState();
+    final ev = widget.oldEvent;
+    _nameController = TextEditingController(text: ev.name);
+    _descriptionController = TextEditingController(text: ev.description);
+    _placeController = TextEditingController(text: ev.place);
+    _tagsController = TextEditingController(text: ev.tags.join(","));
+    _fromController = TextEditingController(text: ev.description);
+    _fromController = TextEditingController(text: ev.from.toString());
+    _toController = TextEditingController(text: ev.to.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +58,12 @@ class _EventAdderState extends State<EventAdder> {
 
   @override
   void dispose() {
-    nameController.dispose();
-    descriptionController.dispose();
-    fromController.dispose();
-    toController.dispose();
-    placeController.dispose();
-    tagsController.dispose();
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _fromController.dispose();
+    _toController.dispose();
+    _placeController.dispose();
+    _tagsController.dispose();
     super.dispose();
   }
 
@@ -66,29 +71,29 @@ class _EventAdderState extends State<EventAdder> {
     return Form(
         key: _formKey,
         child: Column(children: [
-          _field(nameController, 'name'),
-          _field(descriptionController, 'description'),
+          _field(_nameController, 'name'),
+          _field(_descriptionController, 'description'),
           StartEndDurationPicker(
-              fromController: fromController, toController: toController),
-          _field(placeController, 'place'),
+              fromController: _fromController, toController: _toController),
+          _field(_placeController, 'place'),
           _currentImage(),
           _imagePicker(),
-          _field(tagsController, 'tags'),
+          _field(_tagsController, 'tags'),
           ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Added event ${nameController.text}')));
+                      content: Text('Added event ${_nameController.text}')));
                   var path = imagePath;
                   var event = Event(
-                      id: -1,
-                      name: nameController.text,
-                      description: descriptionController.text,
-                      from: DateTime.parse(fromController.text),
-                      to: DateTime.parse(toController.text),
-                      place: placeController.text,
+                      id: widget.oldEvent.id,
+                      name: _nameController.text,
+                      description: _descriptionController.text,
+                      from: DateTime.parse(_fromController.text),
+                      to: DateTime.parse(_toController.text),
+                      place: _placeController.text,
                       tags: TagProvider()
-                          .provideSome(tagsController.text.split(',')),
+                          .provideSome(_tagsController.text.split(',')),
                       image: path ?? "");
                   widget.fnAddEvent(event);
                   Navigator.pop(context);
@@ -119,12 +124,14 @@ class _EventAdderState extends State<EventAdder> {
   }
 
   Widget _imagePicker() {
-    return ElevatedButton(onPressed: pickImage, child: Text("Pick image"));
+    return ElevatedButton(onPressed: pickImage, child: const Text("Pick image"));
   }
 
   void pickImage() async {
     String? imagePath = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const Picker(prefix: 'assets/icons')));
+        context,
+        MaterialPageRoute(
+            builder: (context) => const Picker(prefix: 'assets/icons')));
     onImagePick(imagePath);
   }
 
