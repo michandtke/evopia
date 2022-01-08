@@ -3,6 +3,7 @@ import 'package:evopia/loginscreen/credentials_model.dart';
 import 'package:evopia/profilescreen/profile_view.dart';
 import 'package:evopia/tags/tag.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'event.dart';
 
@@ -36,16 +37,28 @@ class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     List<Event> shownEvents = calcShownEvents();
-
+    DateTime oldDate = DateTime(0);
     return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       filtersAndProfile(),
       Expanded(
           child: ListView.builder(
               itemCount: shownEvents.length,
               itemBuilder: (BuildContext ctxt, int index) {
-                var entry = shownEvents[index];
-                var entryWidget = eventEntry(entry);
-                return entryWidget;
+                var event = shownEvents[index];
+                if (event.from.isSameDate(oldDate)) {
+                  var entryWidget = eventEntry(event);
+                  return entryWidget;
+                } else {
+                  oldDate = event.from;
+                  var newDateMarker = Padding(
+                      child: Text(event.from.asDateString()),
+                      padding: const EdgeInsets.only(left: 15, top: 30));
+                  var divider = const Divider(color: Colors.black);
+                  var entryWidget = eventEntry(event);
+                  return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [newDateMarker, divider, entryWidget]);
+                }
                 // return Dismissible(
                 //     key: Key(entry.hashCode.toString()),
                 //     child: entryWidget,
@@ -64,7 +77,8 @@ class _EventListState extends State<EventList> {
     return filtered;
   }
 
-  List<Event> filterOutOtherEvents(List<Event> allEvents, List<Tag> appliedFilter) {
+  List<Event> filterOutOtherEvents(
+      List<Event> allEvents, List<Tag> appliedFilter) {
     if (appliedFilter.isEmpty) {
       return allEvents;
     }
@@ -128,6 +142,17 @@ class _EventListState extends State<EventList> {
   }
 
   Widget eventEntry(Event event) {
-    return EventCard(event: event, upsertEvent: widget.upsertEvent, context: context);
+    return EventCard(
+        event: event, upsertEvent: widget.upsertEvent, context: context);
+  }
+}
+
+extension DateOnlyCompare on DateTime {
+  bool isSameDate(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
+  }
+
+  String asDateString() {
+    return DateFormat("dd.MM.yyyy").format(this);
   }
 }
