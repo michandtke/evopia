@@ -1,18 +1,17 @@
- - Add a edit mode for an entry
  - Show the place via Google Maps or shit
  - Make the place pickable with Google Maps or shit
  - Make image pickable (need S3 or something for this to work)
- - Sort events by starting time
  - Logout
  - Register per mail
  - Reset password link
- - Add profile page
-   - Image
-   - Contact information
+ - Add contact information on profile page
  - Make end date choosable either direct or by duration
  - Adjust end date be start date + duration if new start date > old end date
  - Make duration some nicer widget to choose from
  - Keep login' alive
  - Make password secure text input
  - Add demo user on login page
- - Use chips were it's better (https://material.io/components/chips/flutter#input-chips)
+ - Let the event list start on the current date
+ - Add copy event functionality
+ - Fix tags
+ - Make changes on profile page persistent
