@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'event.dart';
 import 'event_details.dart';
 
-class NewEventCard extends StatelessWidget {
+class EventCard extends StatelessWidget {
   final Event event;
   final BuildContext context;
 
-  const NewEventCard({Key? key, required this.event, required this.context})
+  const EventCard({Key? key, required this.event, required this.context})
       : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class NewEventCard extends StatelessWidget {
         child: Card(
             child: Column(
           children: [
-            Text(event.name, style: TextStyle(fontSize: 40)),
+            Text(event.name, style: const TextStyle(fontSize: 40)),
             EventImage(path: event.image, height: 120),
             Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),

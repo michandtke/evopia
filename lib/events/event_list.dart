@@ -1,4 +1,4 @@
-import 'package:evopia/events/new_event_card.dart';
+import 'package:evopia/events/event_card.dart';
 import 'package:evopia/loginscreen/credentials_model.dart';
 import 'package:evopia/profilescreen/profile_view.dart';
 import 'package:evopia/tags/tag.dart';
@@ -117,6 +117,6 @@ class _EventListState extends State<EventList> {
   }
 
   Widget createEntry(Event event) {
-    return NewEventCard(event: event, context: context);
+    return EventCard(event: event, context: context);
   }
 }

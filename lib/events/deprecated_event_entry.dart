@@ -5,12 +5,12 @@ import 'event.dart';
 import 'event_details.dart';
 import 'tag_entry.dart';
 
-class EventEntry extends StatelessWidget {
+class DeprecatedEventEntry extends StatelessWidget {
   final Event event;
   final Color color;
   final BuildContext context;
 
-  const EventEntry({Key? key, required this.event, required this.color, required this.context})
+  const DeprecatedEventEntry({Key? key, required this.event, required this.color, required this.context})
       : super(key: key);
 
   @override

@@ -1,8 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:evopia/events/tag_entry.dart';
-import 'package:evopia/images/event_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../date_formatter.dart';
 import 'event.dart';
