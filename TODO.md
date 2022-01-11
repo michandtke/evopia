@@ -10,8 +10,7 @@
  - Make duration some nicer widget to choose from
  - Keep login' alive
  - Make password secure text input
- - Add demo user on login page
  - Let the event list start on the current date
  - Add copy event functionality
- - Fix tags
  - Make changes on profile page persistent
+ - Add logout functionality
