@@ -42,8 +42,8 @@ class _EventAdderState extends State<EventAdder> {
     _descriptionController = TextEditingController(text: ev.description);
     _placeController = TextEditingController(text: ev.place);
     _tagsController = TextEditingController(text: ev.tags.join(","));
-    _fromController = TextEditingController(text: ev.description);
     _fromController = TextEditingController(text: ev.from.toString());
+    imagePath = ev.image;
     _toController = TextEditingController(text: ev.to.toString());
   }
 

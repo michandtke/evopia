@@ -9,7 +9,7 @@ class TagProvider {
       Tag(name: "Shopping"),
       Tag(name: "Boardgames"),
       Tag(name: "PrayerNights"),
-      Tag(name: "Worhsip"),
+      Tag(name: "Worship"),
       Tag(name: "Movies")
     ];
     // return Future.value(tags);
