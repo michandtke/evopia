@@ -1,4 +1,5 @@
 import 'package:evopia/events/tag_entry.dart';
+import 'package:evopia/images/event_image.dart';
 import 'package:flutter/material.dart';
 
 import '../date_formatter.dart';
@@ -39,10 +40,10 @@ class _EventDetailsState extends State<EventDetails> {
             padding: const EdgeInsets.only(
                 left: 40.0, right: 40.0, bottom: 40.0, top: 60.0),
             width: MediaQuery.of(context).size.width,
-            decoration: backgroundDecoration(),
             child: Column(
               children: [
                 nameWidget(),
+                imageWidget(),
                 dateAndTime(),
                 const Expanded(
                   child: Text(""),
@@ -80,29 +81,33 @@ class _EventDetailsState extends State<EventDetails> {
     );
   }
 
-  BoxDecoration backgroundDecoration() {
-    print(widget.event.image);
+  // BoxDecoration backgroundDecoration() {
+  //   print(widget.event.image);
+  //
+  //   if (widget.event.image.isEmpty) {
+  //     return const BoxDecoration(
+  //         color: Color.fromRGBO(182, 199, 196, 0.5019607843137255));
+  //   }
+  //
+  //   // PictureProvider p = EventImage(path: widget.event.image).x();
+  //
+  //   // return BoxDecoration(
+  //   //     image: DecorationImage(
+  //   //         image: EventImage(path: widget.event.image).x(),
+  //   //         colorFilter: ColorFilter.mode(
+  //   //             Colors.black.withOpacity(0.3), BlendMode.dstATop),
+  //   //         fit: BoxFit.cover));
+  //   // return BoxDecoration(
+  //   //   image: DecorationImage(
+  //   //     image: CachedNetworkImageProvider(widget.event.image),
+  //   //     colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+  //   //     fit: BoxFit.cover
+  //   //   )
+  //   // );
+  // }
 
-    if (widget.event.image.isEmpty) {
-      return const BoxDecoration(
-          color: Color.fromRGBO(182, 199, 196, 0.5019607843137255));
-    }
-
-    // PictureProvider p = EventImage(path: widget.event.image).x();
-
-    return BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage(widget.event.image),
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.3), BlendMode.dstATop),
-            fit: BoxFit.cover));
-    // return BoxDecoration(
-    //   image: DecorationImage(
-    //     image: CachedNetworkImageProvider(widget.event.image),
-    //     colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-    //     fit: BoxFit.cover
-    //   )
-    // );
+  Widget imageWidget() {
+    return EventImage(path: widget.event.image);
   }
 
   Widget nameWidget() {
