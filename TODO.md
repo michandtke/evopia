@@ -14,3 +14,5 @@
  - Add copy event functionality
  - Make changes on profile page persistent
  - Add logout functionality
+ - Show place on details page
+ - Fix encoding in texts (f.ex. headline and description)
