@@ -31,7 +31,6 @@ class Picker extends StatelessWidget {
   Future<List<String>> assets(BuildContext context) async {
     final manifestJson =
         await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-    print(manifestJson);
     List<String> images = json
         .decode(manifestJson)
         .keys
@@ -41,14 +40,14 @@ class Picker extends StatelessWidget {
   }
 
   Widget assetList(BuildContext context, List<String> paths) {
-    return Wrap(children: paths.map((path) => toImage(context, path)).toList());
+    List<Widget> images = paths.map((path) => toImage(context, path)).toList();
+    return GridView.count(crossAxisCount: 2, children: images);
   }
 
   Widget toImage(BuildContext context, String path) {
     return MaterialButton(
         onPressed: () => Navigator.pop(context, path),
         child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: EventImage(path: path)));
+            padding: const EdgeInsets.all(2.0), child: EventImage(path: path)));
   }
 }
