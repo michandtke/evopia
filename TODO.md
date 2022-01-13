@@ -9,7 +9,6 @@
  - Keep login' alive
  - Make password secure text input
  - Let the event list start on the current date
- - Add copy event functionality
  - Make changes on profile page persistent
  - Add logout functionality
  - Show place on details page

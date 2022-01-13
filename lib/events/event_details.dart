@@ -73,6 +73,18 @@ class _EventDetailsState extends State<EventDetails> {
                               )));
                 },
                 child: const Icon(Icons.edit, color: Colors.black),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EventAdder(
+                            fnAddEvent: widget.upsertEvent,
+                            oldEvent: widget.event.copyWithoutId(),
+                          )));
+                },
+                child: const Icon(Icons.copy, color: Colors.black),
               )
             ],
           ),
