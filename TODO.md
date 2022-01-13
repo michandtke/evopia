@@ -5,8 +5,6 @@
  - Register per mail
  - Reset password link
  - Add contact information on profile page
- - Make end date choosable either direct or by duration
- - Adjust end date be start date + duration if new start date > old end date
  - Make duration some nicer widget to choose from
  - Keep login' alive
  - Make password secure text input

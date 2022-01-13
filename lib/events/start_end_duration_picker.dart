@@ -19,11 +19,7 @@ class _StartEndDurationPickerState extends State<StartEndDurationPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      _fromField(),
-      _toField(),
-      _durationField()
-    ]);
+    return Column(children: [_fromField(), _toField(), _durationField()]);
   }
 
   @override
@@ -35,16 +31,16 @@ class _StartEndDurationPickerState extends State<StartEndDurationPicker> {
   Widget _fromField() {
     var labelText = 'from ${widget.fromController.text}';
     return MaterialButton(
-        onPressed: () => showDateTimePicker(
-                (value) => widget.fromController.text = value.toString(), widget.fromController.text),
+        onPressed: () =>
+            showDateTimePicker(_fromChanged, widget.fromController.text),
         child: Text(labelText));
   }
 
   Widget _toField() {
     var labelText = 'to ${widget.toController.text}';
     return MaterialButton(
-        onPressed: () => showDateTimePicker(
-                (value) => widget.toController.text = value.toString(), widget.toController.text),
+        onPressed: () =>
+            showDateTimePicker(_toChanged, widget.toController.text),
         child: Text(labelText));
   }
 
@@ -74,12 +70,45 @@ class _StartEndDurationPickerState extends State<StartEndDurationPicker> {
     return TextFormField(
         decoration: InputDecoration(labelText: 'duration'),
         controller: durationController,
+        onChanged: (value) {
+          Duration? newDuration = Duration().parse(value);
+          if (newDuration != null) {
+            var oldFrom = DateTime.parse(widget.fromController.text);
+            setState(() {
+              widget.toController.text = oldFrom.add(newDuration).toString();
+            });
+          }
+        },
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter some text';
           }
           return null;
         });
+  }
+
+  _fromChanged(DateTime newFrom) {
+    widget.fromController.text = newFrom.toString();
+    DateTime oldTo = DateTime.parse(widget.toController.text);
+    Duration? oldDuration = const Duration().parse(durationController.text);
+    if (newFrom.isAfter(oldTo) && oldDuration != null) {
+      DateTime newTo = newFrom.add(oldDuration);
+      widget.toController.text = newTo.toString();
+    } else {
+      _calculateNewDuration();
+    }
+  }
+
+  _toChanged(DateTime newTo) {
+    widget.toController.text = newTo.toString();
+    DateTime oldFrom = DateTime.parse(widget.fromController.text);
+    Duration? oldDuration = const Duration().parse(durationController.text);
+    if (newTo.isBefore(oldFrom) && oldDuration != null) {
+      DateTime newFrom = newTo.subtract(oldDuration);
+      widget.fromController.text = newFrom.toString();
+    } else {
+      _calculateNewDuration();
+    }
   }
 }
 
@@ -97,6 +126,19 @@ extension DurationExtensions on Duration {
     String twoDigitMinutes = _toTwoDigits(inMinutes.remainder(60));
     String twoDigitSeconds = _toTwoDigits(inSeconds.remainder(60));
     return "${_toTwoDigits(inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+  Duration? parse(String durationInHoursMinutes) {
+    List<String> splitted = durationInHoursMinutes.split(":");
+    if (splitted.length != 2) {
+      return null;
+    }
+    String hours = splitted[0];
+    String minutes = splitted[1];
+    if (int.tryParse(hours) != null && int.tryParse(minutes) != null) {
+      return Duration(hours: int.parse(hours), minutes: int.parse(minutes));
+    }
+    return null;
   }
 
   String _toTwoDigits(int n) {
