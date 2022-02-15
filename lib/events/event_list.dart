@@ -36,39 +36,48 @@ class _EventListState extends State<EventList> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime today = DateTime.now().roundDown();
     List<Event> shownEvents = calcShownEvents();
-    DateTime oldDate = DateTime(0);
-    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+    List<Event> oldEvents =
+        shownEvents.where((event) => event.to.isBefore(today)).toList();
+    List<Event> newEvents =
+        shownEvents.where((event) => event.to.isAfter(today)).toList();
+    return Column(children: [
       filtersAndProfile(),
-      Expanded(
-          child: ListView.builder(
-              itemCount: shownEvents.length,
-              itemBuilder: (BuildContext ctxt, int index) {
-                var event = shownEvents[index];
-                if (event.from.isSameDate(oldDate)) {
-                  var entryWidget = eventEntry(event);
-                  return entryWidget;
-                } else {
-                  oldDate = event.from;
-                  var newDateMarker = Padding(
-                      child: Text(event.from.asDateString()),
-                      padding: const EdgeInsets.only(left: 15, top: 30));
-                  var divider = const Divider(color: Colors.black);
-                  var entryWidget = eventEntry(event);
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [newDateMarker, divider, entryWidget]);
-                }
-                // return Dismissible(
-                //     key: Key(entry.hashCode.toString()),
-                //     child: entryWidget,
-                //     onDismissed: (direction) {
-                //       widget.deleteEvent(entry);
-                //       ScaffoldMessenger.of(context).showSnackBar(
-                //           SnackBar(content: Text('${entry.name} dismissed')));
-                //     });
-              }))
+      createListViewForEvents(newEvents),
+      createListViewForEvents(oldEvents)
     ]);
+  }
+
+  Widget createListViewForEvents(List<Event> shownEvents) {
+    DateTime oldDate = DateTime(0);
+    return Expanded(child: ListView.builder(
+        itemCount: shownEvents.length,
+        itemBuilder: (BuildContext ctxt, int index) {
+          var event = shownEvents[index];
+          if (event.from.isSameDate(oldDate)) {
+            var entryWidget = eventEntry(event);
+            return entryWidget;
+          } else {
+            oldDate = event.from;
+            var newDateMarker = Padding(
+                child: Text(event.from.asDateString()),
+                padding: const EdgeInsets.only(left: 15, top: 30));
+            var divider = const Divider(color: Colors.black);
+            var entryWidget = eventEntry(event);
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [newDateMarker, divider, entryWidget]);
+          }
+          // return Dismissible(
+          //     key: Key(entry.hashCode.toString()),
+          //     child: entryWidget,
+          //     onDismissed: (direction) {
+          //       widget.deleteEvent(entry);
+          //       ScaffoldMessenger.of(context).showSnackBar(
+          //           SnackBar(content: Text('${entry.name} dismissed')));
+          //     });
+        }));
   }
 
   List<Event> calcShownEvents() {
@@ -154,5 +163,10 @@ extension DateOnlyCompare on DateTime {
 
   String asDateString() {
     return DateFormat("dd.MM.yyyy").format(this);
+  }
+
+  DateTime roundDown({Duration delta = const Duration(days: 1)}) {
+    return DateTime.fromMillisecondsSinceEpoch(
+        millisecondsSinceEpoch - millisecondsSinceEpoch % delta.inMilliseconds);
   }
 }
