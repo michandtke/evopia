@@ -29,7 +29,6 @@ class EventList extends StatefulWidget {
 class _EventListState extends State<EventList> {
   List<Tag> appliedFilters;
   bool allEvents = false;
-  bool oneEvent = false;
   bool myEvents = true;
 
   _EventListState(this.appliedFilters);
@@ -137,7 +136,6 @@ class _EventListState extends State<EventList> {
       appliedFilters = List.empty();
       myEvents = false;
       allEvents = true;
-      oneEvent = false;
     });
   }
 
@@ -146,7 +144,6 @@ class _EventListState extends State<EventList> {
       appliedFilters = widget.credentialsModel.tags;
       myEvents = true;
       allEvents = false;
-      oneEvent = false;
     });
   }
 
