@@ -37,14 +37,10 @@ class _EventListState extends State<EventList> {
   Widget build(BuildContext context) {
     DateTime today = DateTime.now().roundDown();
     List<Event> shownEvents = calcShownEvents();
-    List<Event> oldEvents =
-        shownEvents.where((event) => event.to.isBefore(today)).toList();
-    List<Event> newEvents =
-        shownEvents.where((event) => event.to.isAfter(today)).toList();
+    Event todaysFirstEvent = shownEvents.firstWhere((event) => event.to.isSameDate(today));
     return Column(children: [
       filtersAndProfile(),
-      createListViewForEvents(newEvents),
-      createListViewForEvents(oldEvents)
+      createListViewForEvents(shownEvents)
     ]);
   }
 
@@ -53,30 +49,26 @@ class _EventListState extends State<EventList> {
     return Expanded(child: ListView.builder(
         itemCount: shownEvents.length,
         itemBuilder: (BuildContext ctxt, int index) {
-          var event = shownEvents[index];
-          if (event.from.isSameDate(oldDate)) {
-            var entryWidget = eventEntry(event);
-            return entryWidget;
-          } else {
-            oldDate = event.from;
-            var newDateMarker = Padding(
-                child: Text(event.from.asDateString()),
-                padding: const EdgeInsets.only(left: 15, top: 30));
-            var divider = const Divider(color: Colors.black);
-            var entryWidget = eventEntry(event);
-            return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [newDateMarker, divider, entryWidget]);
-          }
-          // return Dismissible(
-          //     key: Key(entry.hashCode.toString()),
-          //     child: entryWidget,
-          //     onDismissed: (direction) {
-          //       widget.deleteEvent(entry);
-          //       ScaffoldMessenger.of(context).showSnackBar(
-          //           SnackBar(content: Text('${entry.name} dismissed')));
-          //     });
+          return _singleEntryWithDateDivider(shownEvents, index, oldDate);
         }));
+  }
+
+  Widget _singleEntryWithDateDivider(List<Event> shownEvents, int index, DateTime oldDate) {
+    var event = shownEvents[index];
+    if (event.from.isSameDate(oldDate)) {
+      var entryWidget = eventEntry(event);
+      return entryWidget;
+    } else {
+      oldDate = event.from;
+      var newDateMarker = Padding(
+          child: Text(event.from.asDateString()),
+          padding: const EdgeInsets.only(left: 15, top: 30));
+      var divider = const Divider(color: Colors.black);
+      var entryWidget = eventEntry(event);
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [newDateMarker, divider, entryWidget]);
+    }
   }
 
   List<Event> calcShownEvents() {
