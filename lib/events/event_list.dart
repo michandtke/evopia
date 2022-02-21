@@ -51,6 +51,7 @@ class _EventListState extends State<EventList> {
 
     DateTime previousDate = DateTime(0);
     return ScrollablePositionedList.builder(
+        key: UniqueKey(),
         itemCount: shownEvents.length,
         initialScrollIndex: initialScrollIndex,
         itemBuilder: (BuildContext ctxt, int index) {
