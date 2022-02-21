@@ -39,7 +39,6 @@ class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     List<Event> shownEvents = calcShownEvents();
-    // Event todaysFirstEvent = shownEvents.firstWhere((event) => event.to.isSameDate(today));
     return Column(children: [
       filtersAndProfile(),
       Expanded(child: createListViewForEvents(shownEvents))
@@ -47,26 +46,26 @@ class _EventListState extends State<EventList> {
   }
 
   Widget createListViewForEvents(List<Event> shownEvents) {
-    DateTime oldDate = DateTime(0);
     int initialScrollIndex = PositionCalculator().calcPositionOfToday(shownEvents);
     print("initialScrollIndex: " + initialScrollIndex.toString());
 
+    DateTime previousDate = DateTime(0);
     return ScrollablePositionedList.builder(
         itemCount: shownEvents.length,
         initialScrollIndex: initialScrollIndex,
         itemBuilder: (BuildContext ctxt, int index) {
-          return _singleEntryWithDateDivider(shownEvents, index, oldDate);
+          return _singleEntryWithDateDivider(shownEvents, index, previousDate);
         });
   }
 
   Widget _singleEntryWithDateDivider(
-      List<Event> shownEvents, int index, DateTime oldDate) {
+      List<Event> shownEvents, int index, DateTime previousDate) {
     var event = shownEvents[index];
-    if (event.from.isSameDate(oldDate)) {
+    if (event.from.isSameDate(previousDate)) {
       var entryWidget = eventEntry(event);
       return entryWidget;
     } else {
-      oldDate = event.from;
+      previousDate = event.from;
       var newDateMarker = Padding(
           child: Text(event.from.asDateString()),
           padding: const EdgeInsets.only(left: 15, top: 30));
