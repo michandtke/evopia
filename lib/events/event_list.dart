@@ -1,5 +1,6 @@
 import 'package:evopia/events/event_card.dart';
 import 'package:evopia/loginscreen/credentials_model.dart';
+import 'package:evopia/position_calculator.dart';
 import 'package:evopia/profilescreen/profile_view.dart';
 import 'package:evopia/tags/tag.dart';
 import 'package:flutter/material.dart';
@@ -47,30 +48,7 @@ class _EventListState extends State<EventList> {
 
   Widget createListViewForEvents(List<Event> shownEvents) {
     DateTime oldDate = DateTime(0);
-    DateTime today = DateTime.now().roundDown();
-    Event closestAfterToday = shownEvents.reduce((e1, e2) {
-      Duration differenceEvent1 = e1.to.difference(today);
-      Duration differenceEvent2 = e2.to.difference(today);
-      if (differenceEvent1.isNegative && !differenceEvent2.isNegative) {
-        return e2;
-      }
-      if (differenceEvent2.isNegative && !differenceEvent1.isNegative) {
-        return e1;
-      }
-      if (!differenceEvent1.isNegative && !differenceEvent2.isNegative) {
-        var e1MinusE2 = differenceEvent1 - differenceEvent2;
-        if (e1MinusE2.isNegative) {
-          return e1;
-        }
-        return e2;
-      }
-      var e1MinusE2 = differenceEvent1 - differenceEvent2;
-      if (e1MinusE2.isNegative) {
-        return e2;
-      }
-      return e1;
-    });
-    int initialScrollIndex = shownEvents.indexOf(closestAfterToday);
+    int initialScrollIndex = PositionCalculator().calcPositionOfToday(shownEvents);
     print("initialScrollIndex: " + initialScrollIndex.toString());
 
     return ScrollablePositionedList.builder(
@@ -181,10 +159,5 @@ extension DateOnlyCompare on DateTime {
 
   String asDateString() {
     return DateFormat("dd.MM.yyyy").format(this);
-  }
-
-  DateTime roundDown({Duration delta = const Duration(days: 1)}) {
-    return DateTime.fromMillisecondsSinceEpoch(
-        millisecondsSinceEpoch - millisecondsSinceEpoch % delta.inMilliseconds);
   }
 }
