@@ -4,6 +4,7 @@ import 'package:evopia/profilescreen/profile_view.dart';
 import 'package:evopia/tags/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'event.dart';
 
@@ -30,30 +31,58 @@ class _EventListState extends State<EventList> {
   List<Tag> appliedFilters;
   bool allEvents = false;
   bool myEvents = true;
+  bool isInOldDates = false;
 
   _EventListState(this.appliedFilters);
 
   @override
   Widget build(BuildContext context) {
-    DateTime today = DateTime.now().roundDown();
     List<Event> shownEvents = calcShownEvents();
-    Event todaysFirstEvent = shownEvents.firstWhere((event) => event.to.isSameDate(today));
+    // Event todaysFirstEvent = shownEvents.firstWhere((event) => event.to.isSameDate(today));
     return Column(children: [
       filtersAndProfile(),
-      createListViewForEvents(shownEvents)
+      Expanded(child: createListViewForEvents(shownEvents))
     ]);
   }
 
   Widget createListViewForEvents(List<Event> shownEvents) {
     DateTime oldDate = DateTime(0);
-    return Expanded(child: ListView.builder(
+    DateTime today = DateTime.now().roundDown();
+    Event closestAfterToday = shownEvents.reduce((e1, e2) {
+      Duration differenceEvent1 = e1.to.difference(today);
+      Duration differenceEvent2 = e2.to.difference(today);
+      if (differenceEvent1.isNegative && !differenceEvent2.isNegative) {
+        return e2;
+      }
+      if (differenceEvent2.isNegative && !differenceEvent1.isNegative) {
+        return e1;
+      }
+      if (!differenceEvent1.isNegative && !differenceEvent2.isNegative) {
+        var e1MinusE2 = differenceEvent1 - differenceEvent2;
+        if (e1MinusE2.isNegative) {
+          return e1;
+        }
+        return e2;
+      }
+      var e1MinusE2 = differenceEvent1 - differenceEvent2;
+      if (e1MinusE2.isNegative) {
+        return e2;
+      }
+      return e1;
+    });
+    int initialScrollIndex = shownEvents.indexOf(closestAfterToday);
+    print("initialScrollIndex: " + initialScrollIndex.toString());
+
+    return ScrollablePositionedList.builder(
         itemCount: shownEvents.length,
+        initialScrollIndex: initialScrollIndex,
         itemBuilder: (BuildContext ctxt, int index) {
           return _singleEntryWithDateDivider(shownEvents, index, oldDate);
-        }));
+        });
   }
 
-  Widget _singleEntryWithDateDivider(List<Event> shownEvents, int index, DateTime oldDate) {
+  Widget _singleEntryWithDateDivider(
+      List<Event> shownEvents, int index, DateTime oldDate) {
     var event = shownEvents[index];
     if (event.from.isSameDate(oldDate)) {
       var entryWidget = eventEntry(event);

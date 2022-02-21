@@ -14,3 +14,4 @@
  - Show place on details page
  - Fix encoding in texts (f.ex. headline and description)
  - Add number of persons for events
+ - After copying an event show the new one, not the old one
