@@ -8,7 +8,6 @@
  - Make duration some nicer widget to choose from
  - Keep login' alive
  - Make password secure text input
- - Let the event list start on the current date
  - Make changes on profile page persistent
  - Add logout functionality
  - Show place on details page
