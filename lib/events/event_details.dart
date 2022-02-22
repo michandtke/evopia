@@ -48,7 +48,7 @@ class _EventDetailsState extends State<EventDetails> {
                 const Expanded(
                   child: Text(""),
                 ),
-                tags(),
+                _tags(),
               ],
             )),
         Positioned(
@@ -80,9 +80,9 @@ class _EventDetailsState extends State<EventDetails> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => EventAdder(
-                            fnAddEvent: widget.upsertEvent,
-                            oldEvent: widget.event.copyWithoutId(),
-                          )));
+                                fnAddEvent: widget.upsertEvent,
+                                oldEvent: widget.event.copyWithoutId(),
+                              )));
                 },
                 child: const Icon(Icons.copy, color: Colors.black),
               )
@@ -141,10 +141,11 @@ class _EventDetailsState extends State<EventDetails> {
     );
   }
 
-  Widget tags() {
+  Widget _tags() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children: widget.event.tags.map((t) => TagEntry(name: t.name)).toList(),
+      children:
+          widget.event.tags.map((t) => Chip(label: Text(t.name))).toList(),
     );
   }
 }
