@@ -12,3 +12,4 @@
  - Add logout functionality
  - Add number of persons for events
  - After copying an event show the new one, not the old one
+ - Add delete event capability
