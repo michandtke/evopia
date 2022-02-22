@@ -9,3 +9,4 @@
  - Make changes on profile page persistent
  - Add number of persons for events
  - After copying an event show the new one, not the old one
+ - Just make a simple registration
