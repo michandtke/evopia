@@ -149,8 +149,11 @@ class _EventDetailsState extends State<EventDetails> {
   Widget _tags() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
-      children:
-          widget.event.tags.map((t) => Chip(label: Text(t.name))).toList(),
+      children: widget.event.tags
+          .map((t) => Padding(
+              child: Chip(label: Text(t.name)),
+              padding: const EdgeInsets.only(left: 3)))
+          .toList(),
     );
   }
 }
