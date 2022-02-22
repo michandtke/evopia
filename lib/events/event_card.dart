@@ -8,12 +8,14 @@ import 'event_details.dart';
 class EventCard extends StatelessWidget {
   final Event event;
   final Function upsertEvent;
+  final Function deleteEvent;
   final BuildContext context;
 
   const EventCard(
       {Key? key,
       required this.event,
       required this.upsertEvent,
+      required this.deleteEvent,
       required this.context})
       : super(key: key);
 
@@ -54,6 +56,6 @@ class EventCard extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                EventDetails(event: event, upsertEvent: upsertEvent)));
+                EventDetails(event: event, upsertEvent: upsertEvent, deleteEvent: deleteEvent)));
   }
 }

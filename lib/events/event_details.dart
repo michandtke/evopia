@@ -9,8 +9,13 @@ import 'event_adder.dart';
 class EventDetails extends StatefulWidget {
   final Event event;
   final Function upsertEvent;
+  final Function deleteEvent;
 
-  const EventDetails({Key? key, required this.event, required this.upsertEvent})
+  const EventDetails(
+      {Key? key,
+      required this.event,
+      required this.upsertEvent,
+      required this.deleteEvent})
       : super(key: key);
 
   @override
@@ -86,6 +91,12 @@ class _EventDetailsState extends State<EventDetails> {
                               )));
                 },
                 child: const Icon(Icons.copy, color: Colors.black),
+              ),
+              InkWell(
+                onTap: () {
+                  widget.deleteEvent(widget.event);
+                },
+                child: const Icon(Icons.delete, color: Colors.black),
               )
             ],
           ),

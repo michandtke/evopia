@@ -148,7 +148,7 @@ class _EventListState extends State<EventList> {
 
   Widget eventEntry(Event event) {
     return EventCard(
-        event: event, upsertEvent: widget.upsertEvent, context: context);
+        event: event, upsertEvent: widget.upsertEvent, deleteEvent: widget.deleteEvent, context: context);
   }
 }
 
