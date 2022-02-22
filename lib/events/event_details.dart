@@ -48,6 +48,7 @@ class _EventDetailsState extends State<EventDetails> {
                 const Expanded(
                   child: Text(""),
                 ),
+                _place(),
                 _tags(),
               ],
             )),
@@ -139,6 +140,10 @@ class _EventDetailsState extends State<EventDetails> {
       DateFormatter().formatDates(widget.event.from, widget.event.to),
       style: TextStyle(color: fontColor, fontSize: 20.0),
     );
+  }
+
+  Widget _place() {
+    return Text(widget.event.place);
   }
 
   Widget _tags() {
