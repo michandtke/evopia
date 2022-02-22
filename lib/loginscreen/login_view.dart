@@ -78,6 +78,7 @@ class _LoginViewState extends State<LoginView> {
     return TextFormField(
       decoration: const InputDecoration(labelText: "Password"),
       controller: passwordController,
+      obscureText: true,
     );
   }
 

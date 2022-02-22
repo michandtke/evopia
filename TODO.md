@@ -7,7 +7,6 @@
  - Add contact information on profile page
  - Make duration some nicer widget to choose from
  - Keep login' alive
- - Make password secure text input
  - Make changes on profile page persistent
  - Add logout functionality
  - Add number of persons for events
