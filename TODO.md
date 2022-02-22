@@ -10,6 +10,5 @@
  - Make password secure text input
  - Make changes on profile page persistent
  - Add logout functionality
- - Fix encoding in texts (f.ex. headline and description) -> Server side!
  - Add number of persons for events
  - After copying an event show the new one, not the old one

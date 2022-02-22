@@ -40,7 +40,7 @@ class EventStore {
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
     var content =
         await _client.get(_baseUrl, headers: {"Authorization": basicAuth});
-    List<dynamic> json = jsonDecode(content.body)['_embedded']['events'];
+    List<dynamic> json = _asJson(content)['_embedded']['events'];
     var events = json.whereType<Map>().map((entry) {
       var id = entry['id'] ?? -1;
       var name = entry['name'] ?? "";
@@ -63,6 +63,10 @@ class EventStore {
           image: image);
     });
     return events.toList();
+  }
+
+  _asJson(Response response) {
+    return jsonDecode(utf8.decode(response.bodyBytes));
   }
 
   Future<Response> delete(Event event, username, password) {
