@@ -37,7 +37,8 @@ class ProfileView extends StatelessWidget {
         channels(credentials.channels),
         Padding(
             padding: EdgeInsets.only(top: 100, left: 30), child: Text("TAGS")),
-        tags(credentials.tags)
+        tags(credentials.tags),
+        _logout(credentials, context)
       ],
     );
   }
@@ -98,5 +99,12 @@ class ProfileView extends StatelessWidget {
         }
       },
     );
+  }
+
+  Widget _logout(CredentialsModel credentialsModel, BuildContext context) {
+    return TextButton(onPressed: () {
+      credentialsModel.logOut();
+      Navigator.pop(context);
+    }, child: const Text("Logout"));
   }
 }

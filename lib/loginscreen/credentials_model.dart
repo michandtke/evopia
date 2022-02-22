@@ -36,4 +36,13 @@ class CredentialsModel extends ChangeNotifier {
   bool isLoggedIn() {
     return username.isNotEmpty && password.isNotEmpty;
   }
+
+  void logOut() {
+    username = "";
+    password = "";
+    image = "";
+    tags = [];
+    channels = [];
+    notifyListeners();
+  }
 }
