@@ -45,15 +45,19 @@ class MainScreen extends StatelessWidget {
           return MyHomePage(credentialsModel: credentials);
           // return ProfileView();
         }
-        return LoginView(fnAddNewUser: _addNewUser);
+        return LoginView(fnAddNewUser: (user) => _addNewUser(user, context));
       },
     );
   }
 
-  void _addNewUser(NewUser newUser) async {
+  void _addNewUser(NewUser newUser, BuildContext context) async {
     var response = await UserStore().upsert(newUser);
     print("${response.statusCode}");
     print(response.body);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'Trying to add new user: ${response.statusCode.toString()} - '
+                '${response.body}')));
   }
 }
 
@@ -90,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
             'Error trying to load events: ${response.statusCode.toString()} - '
             '${response.body}')));
   }
+
 
   Center futureEventsList(Future<List<Event>> eventsFuture) {
     return Center(

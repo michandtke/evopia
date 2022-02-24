@@ -127,8 +127,6 @@ class _RegisterViewState extends State<RegisterView> {
     return ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('Added user ${_firstNameController.text}')));
             var newUser = NewUser(
                 firstName: _firstNameController.text,
                 lastName: _lastNameController.text,
