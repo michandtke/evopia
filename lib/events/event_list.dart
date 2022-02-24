@@ -46,6 +46,9 @@ class _EventListState extends State<EventList> {
   }
 
   Widget createListViewForEvents(List<Event> shownEvents) {
+    if (shownEvents.isEmpty) {
+      return const Text("No events where found.");
+    }
     int initialScrollIndex = PositionCalculator().calcPositionOfToday(shownEvents);
     print("initialScrollIndex: " + initialScrollIndex.toString());
 

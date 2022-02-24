@@ -1,6 +1,9 @@
 import 'package:evopia/events/event_list.dart';
+import 'package:evopia/loginscreen/new_user.dart';
+import 'package:evopia/loginscreen/user_store.dart';
 import 'package:evopia/picker.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 import 'events/event.dart';
@@ -42,9 +45,15 @@ class MainScreen extends StatelessWidget {
           return MyHomePage(credentialsModel: credentials);
           // return ProfileView();
         }
-        return const LoginView();
+        return LoginView(fnAddNewUser: _addNewUser);
       },
     );
+  }
+
+  void _addNewUser(NewUser newUser) async {
+    var response = await UserStore().upsert(newUser);
+    print("${response.statusCode}");
+    print(response.body);
   }
 }
 
@@ -62,7 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Future<List<Event>> eventsFuture = EventStore().get(
-        widget.credentialsModel.username, widget.credentialsModel.password);
+        widget.credentialsModel.username,
+        widget.credentialsModel.password,
+        _onError);
     return Scaffold(
       body: Column(children: [Expanded(child: futureEventsList(eventsFuture))]),
       floatingActionButton: FloatingActionButton(
@@ -71,6 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  _onError(Response response) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'Error trying to load events: ${response.statusCode.toString()} - '
+            '${response.body}')));
   }
 
   Center futureEventsList(Future<List<Event>> eventsFuture) {
@@ -87,7 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     credentialsModel: widget.credentialsModel);
               }
               if (snapshot.hasError) {
-                return Text("Unfortunately, an error: ${snapshot.error}");
+                return Column(children: [
+                  Text("Unfortunately, an error: ${snapshot.error}"),
+                  TextButton(
+                      onPressed: () => setState(() {}),
+                      child: const Text("RELOAD"))
+                ]);
               }
               return const CircularProgressIndicator();
             }));

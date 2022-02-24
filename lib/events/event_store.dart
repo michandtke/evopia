@@ -35,11 +35,15 @@ class EventStore {
         body: body);
   }
 
-  Future<List<Event>> get(username, password) async {
+  Future<List<Event>> get(username, password, onError) async {
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
     var content =
         await _client.get(_baseUrl, headers: {"Authorization": basicAuth});
+    if (content.statusCode != 200) {
+      onError(content);
+      return List.empty();
+    }
     List<dynamic> json = _asJson(content)['_embedded']['events'];
     var events = json.whereType<Map>().map((entry) {
       var id = entry['id'] ?? -1;

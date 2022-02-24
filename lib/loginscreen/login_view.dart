@@ -1,3 +1,4 @@
+import 'package:evopia/loginscreen/register_view.dart';
 import 'package:evopia/tags/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,19 +6,19 @@ import 'package:provider/provider.dart';
 import 'credentials_model.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  final Function fnAddNewUser;
+
+  const LoginView({Key? key, required this.fnAddNewUser}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
-
   final _formKey = GlobalKey<FormState>();
 
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-
 
   @override
   void dispose() {
@@ -28,11 +29,10 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Consumer<CredentialsModel>(
-            builder: (context, credentials, child) {
-              return body(loginIn(credentials));
-            }));
+    return Scaffold(body:
+        Consumer<CredentialsModel>(builder: (context, credentials, child) {
+      return body(loginIn(credentials));
+    }));
   }
 
   void Function(String, String) loginIn(CredentialsModel credentials) {
@@ -46,25 +46,24 @@ class _LoginViewState extends State<LoginView> {
 
   Padding body(void Function(String, String) loginIn) {
     return Padding(
-          padding: const EdgeInsets.only(top: 150),
-          child: Center(
-              child: Column(children: [
-            Text("Willkommen bei Mosaik"),
-            form(loginIn),
-            Text("Registrieren"),
-            Text("Password vergessen")
-          ])));
+        padding: const EdgeInsets.only(top: 150),
+        child: Center(
+            child: Column(children: [
+          Text("Willkommen bei Mosaik"),
+          form(loginIn),
+          _register(),
+          Text("Password vergessen")
+        ])));
   }
 
   Widget form(void Function(String, String) loginIn) {
     return Form(
-      key: _formKey,
-      child: Column(children: [
-        usernameField(),
-        passwordField(),
-        loginButton(loginIn)
-      ])
-    );
+        key: _formKey,
+        child: Column(children: [
+          usernameField(),
+          passwordField(),
+          loginButton(loginIn)
+        ]));
   }
 
   Widget usernameField() {
@@ -83,8 +82,24 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Widget loginButton(void Function(String, String) loginIn) {
-    return TextButton(onPressed: () {
-      loginIn(usernameController.text, passwordController.text);
-    }, child: const Text("LOGIN"));
+    return TextButton(
+        onPressed: () {
+          loginIn(usernameController.text, passwordController.text);
+        },
+        child: const Text("LOGIN"));
+  }
+
+  Widget _register() {
+    return TextButton(
+        onPressed: () => _navigateToRegisterView(),
+        child: const Text("Registrieren"));
+  }
+
+  _navigateToRegisterView() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                RegisterView(fnAddNewUser: widget.fnAddNewUser)));
   }
 }
