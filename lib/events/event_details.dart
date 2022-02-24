@@ -1,9 +1,11 @@
 import 'package:evopia/events/details/event_details_tags.dart';
 import 'package:evopia/events/details/event_details_title.dart';
 import 'package:evopia/images/event_image.dart';
+import 'package:evopia/tags/tags_row.dart';
 import 'package:flutter/material.dart';
 
 import '../date_formatter.dart';
+import '../tags/tag.dart';
 import 'event.dart';
 import 'event_adder.dart';
 
@@ -52,6 +54,18 @@ class _EventDetailsState extends State<EventDetails> {
     ]);
   }
 
+  _addTag(Tag tag) {
+    widget.event.tags.add(tag);
+    widget.upsertEvent(widget.event);
+    setState(() {});
+  }
+
+  _removeTag(Tag tag) {
+    widget.event.tags.remove(tag);
+    widget.upsertEvent(widget.event);
+    setState(() {});
+  }
+
   Widget topContent() {
     return Stack(
       children: <Widget>[
@@ -70,7 +84,11 @@ class _EventDetailsState extends State<EventDetails> {
                   child: Text(""),
                 ),
                 _place(),
-                EventDetailsTags(tags: widget.event.tags, updateMode: inUpdateMode)
+                TagsRow(
+                    tags: widget.event.tags,
+                    addTag: _addTag,
+                    removeTag: _removeTag,
+                    editMode: inUpdateMode)
               ],
             )),
         Positioned(
@@ -100,7 +118,8 @@ class _EventDetailsState extends State<EventDetails> {
                 onTap: () {
                   setState(() {
                     inUpdateMode = !inUpdateMode;
-                    var event = widget.event.copy(newName: _nameController.text);
+                    var event =
+                        widget.event.copy(newName: _nameController.text);
                     widget.upsertEvent(event);
                   });
                 },
