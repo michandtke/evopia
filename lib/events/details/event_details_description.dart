@@ -1,12 +1,13 @@
-import 'package:evopia/events/details/event_details_text_field.dart';
 import 'package:flutter/material.dart';
 
-class EventDetailsTitle extends StatelessWidget {
+import 'event_details_text_field.dart';
+
+class EventDetailsDescription extends StatelessWidget {
   final TextEditingController controller;
   final bool updateMode;
-  final _textStyle = const TextStyle(color: Colors.black, fontSize: 45.0);
+  final _textStyle = const TextStyle(color: Colors.black, fontSize: 28.0);
 
-  const EventDetailsTitle(
+  const EventDetailsDescription(
       {Key? key, required this.controller, required this.updateMode})
       : super(key: key);
 

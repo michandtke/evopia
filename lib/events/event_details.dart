@@ -1,3 +1,5 @@
+import 'package:evopia/events/details/event_details_description.dart';
+import 'package:evopia/events/details/event_details_place.dart';
 import 'package:evopia/events/details/event_details_tags.dart';
 import 'package:evopia/events/details/event_details_title.dart';
 import 'package:evopia/images/event_image.dart';
@@ -29,16 +31,23 @@ class _EventDetailsState extends State<EventDetails> {
   var fontColor = Colors.black;
   bool inUpdateMode = false;
   late TextEditingController _nameController;
+  late TextEditingController _placeController;
+  late TextEditingController _descriptionController;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.event.name);
+    _placeController = TextEditingController(text: widget.event.place);
+    _descriptionController =
+        TextEditingController(text: widget.event.description);
   }
 
   @override
   void dispose() {
     _nameController.dispose();
+    _placeController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -50,7 +59,8 @@ class _EventDetailsState extends State<EventDetails> {
   Widget body() {
     return Column(children: [
       topContent(),
-      descriptionWidget(),
+      EventDetailsDescription(
+          controller: _descriptionController, updateMode: inUpdateMode)
     ]);
   }
 
@@ -102,7 +112,10 @@ class _EventDetailsState extends State<EventDetails> {
   }
 
   void _stateChangeInlineUpdate() {
-    var event = widget.event.copy(newName: _nameController.text);
+    var event = widget.event.copy(
+        newName: _nameController.text,
+        newPlace: _placeController.text,
+        newDescription: _descriptionController.text);
     widget.upsertEvent(event);
     setState(() {
       inUpdateMode = !inUpdateMode;
@@ -137,12 +150,12 @@ class _EventDetailsState extends State<EventDetails> {
   List<Widget> _realContent() {
     return [
       EventDetailsTitle(controller: _nameController, updateMode: inUpdateMode),
-      imageWidget(),
+      EventImage(path: widget.event.image),
       dateAndTime(),
       const Expanded(
         child: Text(""),
       ),
-      _place(),
+      EventDetailsPlace(controller: _placeController, updateMode: inUpdateMode),
       TagsRow(
           tags: widget.event.tags,
           addTag: _addTag,
@@ -151,30 +164,10 @@ class _EventDetailsState extends State<EventDetails> {
     ];
   }
 
-  Widget imageWidget() {
-    return EventImage(path: widget.event.image);
-  }
-
-  Widget nameWidget() {
-    return Text(
-      widget.event.name,
-      style: TextStyle(color: fontColor, fontSize: 45.0),
-    );
-  }
-
-  Widget descriptionWidget() {
-    return Text(widget.event.description,
-        style: const TextStyle(fontSize: 24.0));
-  }
-
   Widget dateAndTime() {
     return Text(
       DateFormatter().formatDates(widget.event.from, widget.event.to),
       style: TextStyle(color: fontColor, fontSize: 20.0),
     );
-  }
-
-  Widget _place() {
-    return Text(widget.event.place);
   }
 }
