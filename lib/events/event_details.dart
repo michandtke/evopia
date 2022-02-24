@@ -1,4 +1,4 @@
-import 'package:evopia/events/tag_entry.dart';
+import 'package:evopia/events/details/event_details_title.dart';
 import 'package:evopia/images/event_image.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +24,20 @@ class EventDetails extends StatefulWidget {
 
 class _EventDetailsState extends State<EventDetails> {
   var fontColor = Colors.black;
+  bool inUpdateMode = false;
+  late TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.event.name);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +61,8 @@ class _EventDetailsState extends State<EventDetails> {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                nameWidget(),
+                EventDetailsTitle(
+                    controller: _nameController, updateMode: inUpdateMode),
                 imageWidget(),
                 dateAndTime(),
                 const Expanded(
@@ -79,6 +94,16 @@ class _EventDetailsState extends State<EventDetails> {
                               )));
                 },
                 child: const Icon(Icons.edit, color: Colors.black),
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    inUpdateMode = !inUpdateMode;
+                    var event = widget.event.copy(newName: _nameController.text);
+                    widget.upsertEvent(event);
+                  });
+                },
+                child: const Icon(Icons.edit_attributes, color: Colors.black),
               ),
               InkWell(
                 onTap: () {

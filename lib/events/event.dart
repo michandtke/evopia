@@ -31,4 +31,16 @@ class Event {
         image: image,
         tags: tags);
   }
+
+  Event copy({newName}) {
+    return Event(
+        id: id,
+        name: newName ?? name,
+        description: description,
+        from: from,
+        to: to,
+        place: place,
+        image: image,
+        tags: tags);
+  }
 }
