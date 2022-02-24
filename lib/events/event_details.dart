@@ -69,85 +69,86 @@ class _EventDetailsState extends State<EventDetails> {
   Widget topContent() {
     return Stack(
       children: <Widget>[
-        Container(
-            height: MediaQuery.of(context).size.height * 0.5,
-            padding: const EdgeInsets.only(
-                left: 40.0, right: 40.0, bottom: 40.0, top: 60.0),
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                EventDetailsTitle(
-                    controller: _nameController, updateMode: inUpdateMode),
-                imageWidget(),
-                dateAndTime(),
-                const Expanded(
-                  child: Text(""),
-                ),
-                _place(),
-                TagsRow(
-                    tags: widget.event.tags,
-                    addTag: _addTag,
-                    removeTag: _removeTag,
-                    editMode: inUpdateMode)
-              ],
-            )),
+        _page(),
         Positioned(
           left: 8.0,
           top: 60.0,
-          child: Row(
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(Icons.arrow_back, color: Colors.black),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EventAdder(
-                                fnAddEvent: widget.upsertEvent,
-                                oldEvent: widget.event,
-                              )));
-                },
-                child: const Icon(Icons.edit, color: Colors.black),
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    inUpdateMode = !inUpdateMode;
-                    var event =
-                        widget.event.copy(newName: _nameController.text);
-                    widget.upsertEvent(event);
-                  });
-                },
-                child: const Icon(Icons.edit_attributes, color: Colors.black),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EventAdder(
-                                fnAddEvent: widget.upsertEvent,
-                                oldEvent: widget.event.copyWithoutId(),
-                              )));
-                },
-                child: const Icon(Icons.copy, color: Colors.black),
-              ),
-              InkWell(
-                onTap: () {
-                  widget.deleteEvent(widget.event);
-                },
-                child: const Icon(Icons.delete, color: Colors.black),
-              )
-            ],
-          ),
+          child: topButtons(),
         )
       ],
     );
+  }
+
+  Row topButtons() {
+    return Row(
+      children: [
+        _topButton(() => Navigator.pop(context), Icons.arrow_back),
+        _topButton(_navigateToEditEvent, Icons.edit),
+        _topButton(_stateChangeInlineUpdate, Icons.edit_attributes),
+        _topButton(_navigateToCopy, Icons.copy),
+        _topButton(() => widget.deleteEvent(widget.event), Icons.delete)
+      ],
+    );
+  }
+
+  void _navigateToEditEvent() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EventAdder(
+                  fnAddEvent: widget.upsertEvent,
+                  oldEvent: widget.event,
+                )));
+  }
+
+  void _stateChangeInlineUpdate() {
+    var event = widget.event.copy(newName: _nameController.text);
+    widget.upsertEvent(event);
+    setState(() {
+      inUpdateMode = !inUpdateMode;
+    });
+  }
+
+  void _navigateToCopy() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EventAdder(
+                  fnAddEvent: widget.upsertEvent,
+                  oldEvent: widget.event.copyWithoutId(),
+                )));
+  }
+
+  Widget _topButton(void Function() onTap, IconData icon) {
+    return InkWell(onTap: onTap, child: Icon(icon, color: Colors.black));
+  }
+
+  Container _page() {
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        padding: const EdgeInsets.only(
+            left: 40.0, right: 40.0, bottom: 40.0, top: 60.0),
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: _realContent(),
+        ));
+  }
+
+  List<Widget> _realContent() {
+    return [
+      EventDetailsTitle(controller: _nameController, updateMode: inUpdateMode),
+      imageWidget(),
+      dateAndTime(),
+      const Expanded(
+        child: Text(""),
+      ),
+      _place(),
+      TagsRow(
+          tags: widget.event.tags,
+          addTag: _addTag,
+          removeTag: _removeTag,
+          editMode: inUpdateMode)
+    ];
   }
 
   Widget imageWidget() {
