@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../picker.dart';
+import '../tags/tags_row.dart';
 
 class ProfileView extends StatelessWidget {
   final void Function(Tag tag) addTag;
   final void Function(Tag tag) removeTag;
   final void Function(String path) changeImage;
 
-  const ProfileView(this.addTag, this.removeTag, this.changeImage, {Key? key}) : super(key: key);
+  const ProfileView(this.addTag, this.removeTag, this.changeImage, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,25 +38,39 @@ class ProfileView extends StatelessWidget {
             child: Text("CHANNELS")),
         channels(credentials.channels),
         Padding(
-            padding: EdgeInsets.only(top: 80, left: 30), child: Text("TAGS")),
-        tags(credentials.tags),
-        _logout(credentials, context)
+            padding: const EdgeInsets.only(top: 80, left: 30),
+            child: _tagsSection(credentials)),
+        Padding(
+            padding: const EdgeInsets.only(top: 10, left: 30),
+            child: _logout(credentials, context)),
       ],
     );
   }
 
+  Widget _tagsSection(CredentialsModel credentials) {
+    return Column(children: [
+      const Text("TAGS"),
+      TagsRow(
+          tags: credentials.tags,
+          addTag: addTag,
+          removeTag: removeTag,
+          editMode: true)
+    ]);
+  }
+
   Widget image(String path, BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        newImage(context);
-      }, // Image tapped
-      child: Center(child: Image.asset(path))
-    );
+        onTap: () {
+          newImage(context);
+        }, // Image tapped
+        child: Center(child: Image.asset(path)));
   }
 
   newImage(BuildContext context) async {
     String? imagePath = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const Picker(prefix: 'assets/profiles')));
+        context,
+        MaterialPageRoute(
+            builder: (context) => const Picker(prefix: 'assets/profiles')));
 
     if (imagePath != null) {
       changeImage(imagePath);
@@ -65,50 +81,12 @@ class ProfileView extends StatelessWidget {
     return Column(children: channels.map((chan) => Text(chan)).toList());
   }
 
-  Widget tags(List<Tag> tags) {
-    List<Widget> tagChips = tags
-        .map((tag) => InputChip(
-        avatar: const Icon(Icons.remove),
-        label: Text(tag.name),
-        onSelected: (sel) {
-          if (sel) {
-            removeTag(tag);
-          }
-        }))
-        .toList();
-    return Column(children: [
-      Wrap(
-          spacing: 8.0,
-          runSpacing: 4.0,
-          children: [...tagChips, newTag(tags)])
-    ]);
-  }
-
-  Widget newTag(List<Tag> tagsAlreadyAssigned) {
-    var tags = TagProvider()
-        .provide()
-        .where((element) => !tagsAlreadyAssigned.contains(element));
-    return DropdownButton<Tag>(
-      hint: const Chip(label: Icon(Icons.add_sharp)),
-      icon: Container(),
-      underline: Container(),
-
-      items: tags
-          .map(
-              (tag) => DropdownMenuItem<Tag>(value: tag, child: Text(tag.name)))
-          .toList(),
-      onChanged: (tag) {
-        if (tag != null) {
-          addTag(tag);
-        }
-      },
-    );
-  }
-
   Widget _logout(CredentialsModel credentialsModel, BuildContext context) {
-    return TextButton(onPressed: () {
-      credentialsModel.logOut();
-      Navigator.pop(context);
-    }, child: const Text("Logout"));
+    return TextButton(
+        onPressed: () {
+          credentialsModel.logOut();
+          Navigator.pop(context);
+        },
+        child: const Text("Logout"));
   }
 }
