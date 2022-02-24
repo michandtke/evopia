@@ -1,3 +1,4 @@
+import 'package:evopia/events/details/event_details_tags.dart';
 import 'package:evopia/events/details/event_details_title.dart';
 import 'package:evopia/images/event_image.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _EventDetailsState extends State<EventDetails> {
                   child: Text(""),
                 ),
                 _place(),
-                _tags(),
+                EventDetailsTags(tags: widget.event.tags, updateMode: inUpdateMode)
               ],
             )),
         Positioned(
@@ -130,31 +131,6 @@ class _EventDetailsState extends State<EventDetails> {
     );
   }
 
-  // BoxDecoration backgroundDecoration() {
-  //   print(widget.event.image);
-  //
-  //   if (widget.event.image.isEmpty) {
-  //     return const BoxDecoration(
-  //         color: Color.fromRGBO(182, 199, 196, 0.5019607843137255));
-  //   }
-  //
-  //   // PictureProvider p = EventImage(path: widget.event.image).x();
-  //
-  //   // return BoxDecoration(
-  //   //     image: DecorationImage(
-  //   //         image: EventImage(path: widget.event.image).x(),
-  //   //         colorFilter: ColorFilter.mode(
-  //   //             Colors.black.withOpacity(0.3), BlendMode.dstATop),
-  //   //         fit: BoxFit.cover));
-  //   // return BoxDecoration(
-  //   //   image: DecorationImage(
-  //   //     image: CachedNetworkImageProvider(widget.event.image),
-  //   //     colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-  //   //     fit: BoxFit.cover
-  //   //   )
-  //   // );
-  // }
-
   Widget imageWidget() {
     return EventImage(path: widget.event.image);
   }
@@ -180,16 +156,5 @@ class _EventDetailsState extends State<EventDetails> {
 
   Widget _place() {
     return Text(widget.event.place);
-  }
-
-  Widget _tags() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: widget.event.tags
-          .map((t) => Padding(
-              child: Chip(label: Text(t.name)),
-              padding: const EdgeInsets.only(left: 3)))
-          .toList(),
-    );
   }
 }

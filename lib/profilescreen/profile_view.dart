@@ -32,11 +32,11 @@ class ProfileView extends StatelessWidget {
           child: Text("Hello ${credentials.username}, nice to see you."),
         ),
         Padding(
-            padding: EdgeInsets.only(top: 100, left: 30),
+            padding: EdgeInsets.only(top: 80, left: 30),
             child: Text("CHANNELS")),
         channels(credentials.channels),
         Padding(
-            padding: EdgeInsets.only(top: 100, left: 30), child: Text("TAGS")),
+            padding: EdgeInsets.only(top: 80, left: 30), child: Text("TAGS")),
         tags(credentials.tags),
         _logout(credentials, context)
       ],
@@ -66,21 +66,21 @@ class ProfileView extends StatelessWidget {
   }
 
   Widget tags(List<Tag> tags) {
+    List<Widget> tagChips = tags
+        .map((tag) => InputChip(
+        avatar: const Icon(Icons.remove),
+        label: Text(tag.name),
+        onSelected: (sel) {
+          if (sel) {
+            removeTag(tag);
+          }
+        }))
+        .toList();
     return Column(children: [
       Wrap(
           spacing: 8.0,
           runSpacing: 4.0,
-          children: tags
-              .map((tag) => InputChip(
-                  avatar: const Icon(Icons.remove),
-                  label: Text(tag.name),
-                  onSelected: (sel) {
-                    if (sel) {
-                      removeTag(tag);
-                    }
-                  }))
-              .toList()),
-      newTag(tags)
+          children: [...tagChips, newTag(tags)])
     ]);
   }
 
@@ -89,6 +89,10 @@ class ProfileView extends StatelessWidget {
         .provide()
         .where((element) => !tagsAlreadyAssigned.contains(element));
     return DropdownButton<Tag>(
+      hint: const Chip(label: Icon(Icons.add_sharp)),
+      icon: Container(),
+      underline: Container(),
+
       items: tags
           .map(
               (tag) => DropdownMenuItem<Tag>(value: tag, child: Text(tag.name)))
