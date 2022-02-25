@@ -4,16 +4,21 @@ import '../picker.dart';
 import 'event_image.dart';
 
 class PickableImage extends StatelessWidget {
+  final bool updateMode;
   final String? imagePath;
   final void Function(String?) onImagePick;
 
   const PickableImage(
-      {Key? key, required this.imagePath, required this.onImagePick})
+      {Key? key,
+      required this.updateMode,
+      required this.imagePath,
+      required this.onImagePick})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return _pickable(context);
+    if (updateMode) return _pickable(context);
+    return _image();
   }
 
   Widget _pickable(BuildContext context) {

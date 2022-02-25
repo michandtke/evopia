@@ -34,7 +34,6 @@ class _EventAdderState extends State<EventAdder> {
 
   ImagePicker picker = ImagePicker();
 
-
   @override
   void initState() {
     super.initState();
@@ -77,7 +76,8 @@ class _EventAdderState extends State<EventAdder> {
           StartEndDurationPicker(
               fromController: _fromController, toController: _toController),
           _field(_placeController, 'place'),
-          PickableImage(imagePath: imagePath, onImagePick: onImagePick),
+          PickableImage(
+              imagePath: imagePath, onImagePick: onImagePick, updateMode: true),
           _field(_tagsController, 'tags'),
           ElevatedButton(
               onPressed: () {

@@ -33,7 +33,7 @@ class Event extends Equatable {
         tags: tags);
   }
 
-  Event copy({newName, newPlace, newDescription, newTags}) {
+  Event copy({newName, newPlace, newDescription, newTags, newImagePath}) {
     return Event(
         id: id,
         name: newName ?? name,
@@ -41,7 +41,7 @@ class Event extends Equatable {
         from: from,
         to: to,
         place: newPlace ?? place,
-        image: image,
+        image: newImagePath ?? image,
         tags: newTags ?? tags);
   }
 

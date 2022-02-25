@@ -1,8 +1,7 @@
 import 'package:evopia/events/details/event_details_description.dart';
 import 'package:evopia/events/details/event_details_place.dart';
-import 'package:evopia/events/details/event_details_tags.dart';
 import 'package:evopia/events/details/event_details_title.dart';
-import 'package:evopia/images/event_image.dart';
+import 'package:evopia/images/pickable_image.dart';
 import 'package:evopia/tags/tags_row.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +33,7 @@ class _EventDetailsState extends State<EventDetails> {
   late TextEditingController _placeController;
   late TextEditingController _descriptionController;
   late List<Tag> _tags;
+  late String _imagePath;
 
   @override
   void initState() {
@@ -43,6 +43,7 @@ class _EventDetailsState extends State<EventDetails> {
     _descriptionController =
         TextEditingController(text: widget.event.description);
     _tags = List.from(widget.event.tags);
+    _imagePath = widget.event.image;
   }
 
   @override
@@ -116,8 +117,12 @@ class _EventDetailsState extends State<EventDetails> {
         newName: _nameController.text,
         newPlace: _placeController.text,
         newDescription: _descriptionController.text,
-        newTags: _tags);
+        newTags: _tags,
+        newImagePath: _imagePath);
     if (event != widget.event) {
+      print("New event. Upserting!");
+      print(widget.event.toString());
+      print(event.toString());
       widget.upsertEvent(event);
     }
     setState(() {
@@ -153,7 +158,10 @@ class _EventDetailsState extends State<EventDetails> {
   List<Widget> _realContent() {
     return [
       EventDetailsTitle(controller: _nameController, updateMode: inUpdateMode),
-      EventImage(path: widget.event.image),
+      PickableImage(
+          updateMode: inUpdateMode,
+          imagePath: _imagePath,
+          onImagePick: onImagePick),
       dateAndTime(),
       const Expanded(
         child: Text(""),
@@ -165,6 +173,14 @@ class _EventDetailsState extends State<EventDetails> {
           removeTag: _removeTag,
           editMode: inUpdateMode)
     ];
+  }
+
+  void onImagePick(String? newPath) {
+    if (newPath != null) {
+      setState(() {
+        _imagePath = newPath;
+      });
+    }
   }
 
   Widget dateAndTime() {
