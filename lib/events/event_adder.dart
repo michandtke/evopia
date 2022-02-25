@@ -1,5 +1,6 @@
 import 'package:evopia/events/start_end_duration_picker.dart';
 import 'package:evopia/images/event_image.dart';
+import 'package:evopia/images/pickable_image.dart';
 import 'package:evopia/tags/tag_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -76,8 +77,7 @@ class _EventAdderState extends State<EventAdder> {
           StartEndDurationPicker(
               fromController: _fromController, toController: _toController),
           _field(_placeController, 'place'),
-          _currentImage(),
-          _imagePicker(),
+          PickableImage(imagePath: imagePath, onImagePick: onImagePick),
           _field(_tagsController, 'tags'),
           ElevatedButton(
               onPressed: () {
@@ -113,26 +113,6 @@ class _EventAdderState extends State<EventAdder> {
           }
           return null;
         });
-  }
-
-  Widget _currentImage() {
-    var path = imagePath;
-    if (path != null && path.isNotEmpty) {
-      return EventImage(path: path);
-    }
-    return Container();
-  }
-
-  Widget _imagePicker() {
-    return ElevatedButton(onPressed: pickImage, child: const Text("Pick image"));
-  }
-
-  void pickImage() async {
-    String? imagePath = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const Picker(prefix: 'assets/icons')));
-    onImagePick(imagePath);
   }
 
   void onImagePick(String? path) async {

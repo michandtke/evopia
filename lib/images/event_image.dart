@@ -8,7 +8,7 @@ class EventImage extends StatelessWidget {
   final double? height;
 
   const EventImage({Key? key, required this.path, this.height}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     if (path.isEmpty) {
