@@ -32,7 +32,7 @@ class Event {
         tags: tags);
   }
 
-  Event copy({newName, newPlace, newDescription}) {
+  Event copy({newName, newPlace, newDescription, newTags}) {
     return Event(
         id: id,
         name: newName ?? name,
@@ -41,6 +41,6 @@ class Event {
         to: to,
         place: newPlace ?? place,
         image: image,
-        tags: tags);
+        tags: newTags ?? tags);
   }
 }

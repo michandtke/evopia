@@ -33,6 +33,7 @@ class _EventDetailsState extends State<EventDetails> {
   late TextEditingController _nameController;
   late TextEditingController _placeController;
   late TextEditingController _descriptionController;
+  late List<Tag> _tags;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _EventDetailsState extends State<EventDetails> {
     _placeController = TextEditingController(text: widget.event.place);
     _descriptionController =
         TextEditingController(text: widget.event.description);
+    _tags = List.from(widget.event.tags);
   }
 
   @override
@@ -65,14 +67,12 @@ class _EventDetailsState extends State<EventDetails> {
   }
 
   _addTag(Tag tag) {
-    widget.event.tags.add(tag);
-    widget.upsertEvent(widget.event);
+    _tags.add(tag);
     setState(() {});
   }
 
   _removeTag(Tag tag) {
-    widget.event.tags.remove(tag);
-    widget.upsertEvent(widget.event);
+    _tags.remove(tag);
     setState(() {});
   }
 
@@ -115,7 +115,8 @@ class _EventDetailsState extends State<EventDetails> {
     var event = widget.event.copy(
         newName: _nameController.text,
         newPlace: _placeController.text,
-        newDescription: _descriptionController.text);
+        newDescription: _descriptionController.text,
+        newTags: _tags);
     widget.upsertEvent(event);
     setState(() {
       inUpdateMode = !inUpdateMode;
@@ -157,7 +158,7 @@ class _EventDetailsState extends State<EventDetails> {
       ),
       EventDetailsPlace(controller: _placeController, updateMode: inUpdateMode),
       TagsRow(
-          tags: widget.event.tags,
+          tags: _tags,
           addTag: _addTag,
           removeTag: _removeTag,
           editMode: inUpdateMode)
