@@ -55,7 +55,9 @@ class EventCard extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                EventDetails(event: event, upsertEvent: upsertEvent, deleteEvent: deleteEvent)));
+            builder: (context) => EventDetails(
+                event: event,
+                upsertEvent: upsertEvent,
+                deleteEvent: deleteEvent)));
   }
 }

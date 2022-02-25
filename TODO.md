@@ -10,3 +10,4 @@
  - Add number of persons for events
  - After copying an event show the new one, not the old one
  - Just make a simple registration
+ - Define testcases: What should happen when an event is copied while in edit mode, etc.

@@ -34,6 +34,7 @@ class _EventDetailsState extends State<EventDetails> {
   late TextEditingController _descriptionController;
   late List<Tag> _tags;
   late String _imagePath;
+  late Event _lastSavedEvent;
 
   @override
   void initState() {
@@ -44,6 +45,7 @@ class _EventDetailsState extends State<EventDetails> {
         TextEditingController(text: widget.event.description);
     _tags = List.from(widget.event.tags);
     _imagePath = widget.event.image;
+    _lastSavedEvent = widget.event;
   }
 
   @override
@@ -113,21 +115,26 @@ class _EventDetailsState extends State<EventDetails> {
   }
 
   void _stateChangeInlineUpdate() {
-    var event = widget.event.copy(
+    var event = _lastSavedEvent.copy(
         newName: _nameController.text,
         newPlace: _placeController.text,
         newDescription: _descriptionController.text,
         newTags: _tags,
         newImagePath: _imagePath);
-    if (event != widget.event) {
-      print("New event. Upserting!");
+    if (event != _lastSavedEvent) {
+      print("Something in the event changed. Upserting!");
       print(widget.event.toString());
       print(event.toString());
       widget.upsertEvent(event);
+      setState(() {
+        _lastSavedEvent = event;
+        inUpdateMode = !inUpdateMode;
+      });
+    } else {
+      setState(() {
+        inUpdateMode = !inUpdateMode;
+      });
     }
-    setState(() {
-      inUpdateMode = !inUpdateMode;
-    });
   }
 
   void _navigateToCopy() {
