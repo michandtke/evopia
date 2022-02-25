@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:evopia/tags/tag.dart';
 
-class Event {
+class Event extends Equatable {
   final int id;
   final String name;
   final String description;
@@ -43,4 +44,7 @@ class Event {
         image: image,
         tags: newTags ?? tags);
   }
+
+  @override
+  List<Object> get props => [id, name, description, from, to, tags, place, image];
 }

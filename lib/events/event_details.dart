@@ -117,7 +117,9 @@ class _EventDetailsState extends State<EventDetails> {
         newPlace: _placeController.text,
         newDescription: _descriptionController.text,
         newTags: _tags);
-    widget.upsertEvent(event);
+    if (event != widget.event) {
+      widget.upsertEvent(event);
+    }
     setState(() {
       inUpdateMode = !inUpdateMode;
     });
