@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../date_formatter.dart';
 import '../tags/tag.dart';
+import '../timepicker/time_picker.dart';
 import 'event.dart';
 import 'event_adder.dart';
 
@@ -147,6 +148,11 @@ class _EventDetailsState extends State<EventDetails> {
                 )));
   }
 
+  void _navigateToTimePicker() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => TimePicker()));
+  }
+
   Widget _topButton(void Function() onTap, IconData icon) {
     return InkWell(onTap: onTap, child: Icon(icon, color: Colors.black));
   }
@@ -169,7 +175,7 @@ class _EventDetailsState extends State<EventDetails> {
           updateMode: inUpdateMode,
           imagePath: _imagePath,
           onImagePick: onImagePick),
-      dateAndTime(),
+      _dateAndTime(),
       const Expanded(
         child: Text(""),
       ),
@@ -190,10 +196,14 @@ class _EventDetailsState extends State<EventDetails> {
     }
   }
 
-  Widget dateAndTime() {
+  Widget _dateAndTimeContent() {
     return Text(
       DateFormatter().formatDates(widget.event.from, widget.event.to),
       style: TextStyle(color: fontColor, fontSize: 20.0),
     );
+  }
+
+  Widget _dateAndTime() {
+    return InkWell(child: _dateAndTimeContent(), onTap: _navigateToTimePicker);
   }
 }
