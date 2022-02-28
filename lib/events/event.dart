@@ -33,18 +33,26 @@ class Event extends Equatable {
         tags: tags);
   }
 
-  Event copy({newName, newPlace, newDescription, newTags, newImagePath}) {
+  Event copy(
+      {newName,
+      newPlace,
+      newDescription,
+      newTags,
+      newImagePath,
+      newFrom,
+      newTo}) {
     return Event(
         id: id,
         name: newName ?? name,
         description: newDescription ?? description,
-        from: from,
-        to: to,
+        from: newFrom ?? from,
+        to: newTo ?? to,
         place: newPlace ?? place,
         image: newImagePath ?? image,
         tags: newTags ?? tags);
   }
 
   @override
-  List<Object> get props => [id, name, description, from, to, tags, place, image];
+  List<Object> get props =>
+      [id, name, description, from, to, tags, place, image];
 }

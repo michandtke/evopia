@@ -1,13 +1,21 @@
+import 'package:f_datetimerangepicker/f_datetimerangepicker.dart';
 import 'package:flutter/material.dart';
 
 import '../../date_formatter.dart';
-import '../../timepicker/time_picker.dart';
-import '../event.dart';
 
 class DateAndTimePicker extends StatefulWidget {
-  final Event event;
+  final DateTime from;
+  final DateTime to;
+  final bool inUpdateMode;
+  final void Function(DateTime, DateTime) onChange;
 
-  const DateAndTimePicker({Key? key, required this.event}) : super(key: key);
+  const DateAndTimePicker(
+      {Key? key,
+      required this.inUpdateMode,
+      required this.from,
+      required this.to,
+      required this.onChange})
+      : super(key: key);
 
   @override
   State createState() => _DateAndTimePickerState();
@@ -25,13 +33,30 @@ class _DateAndTimePickerState extends State<DateAndTimePicker> {
 
   Widget _dateAndTimeContent() {
     return Text(
-      DateFormatter().formatDates(widget.event.from, widget.event.to),
+      DateFormatter().formatDates(widget.from, widget.to),
       style: const TextStyle(color: Colors.black, fontSize: 20.0),
     );
   }
 
   void _navigateToTimePicker() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => TimePicker()));
+    if (widget.inUpdateMode) {
+      DateTimeRangePicker(
+          startText: "From",
+          endText: "To",
+          doneText: "Yes",
+          cancelText: "Cancel",
+          interval: 5,
+          initialStartTime: widget.from,
+          initialEndTime: widget.to,
+          mode: DateTimeRangePickerMode.dateAndTime,
+          minimumTime: DateTime.now().subtract(Duration(days: 5)),
+          maximumTime: DateTime.now().add(Duration(days: 25)),
+          use24hFormat: true,
+          onConfirm: (start, end) {
+            print(start);
+            print(end);
+            widget.onChange(start, end);
+          }).showPicker(context);
+    }
   }
 }

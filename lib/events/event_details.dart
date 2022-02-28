@@ -6,9 +6,7 @@ import 'package:evopia/images/pickable_image.dart';
 import 'package:evopia/tags/tags_row.dart';
 import 'package:flutter/material.dart';
 
-import '../date_formatter.dart';
 import '../tags/tag.dart';
-import '../timepicker/time_picker.dart';
 import 'event.dart';
 import 'event_adder.dart';
 
@@ -37,6 +35,8 @@ class _EventDetailsState extends State<EventDetails> {
   late List<Tag> _tags;
   late String _imagePath;
   late Event _lastSavedEvent;
+  late DateTime _from;
+  late DateTime _to;
 
   @override
   void initState() {
@@ -48,6 +48,8 @@ class _EventDetailsState extends State<EventDetails> {
     _tags = List.from(widget.event.tags);
     _imagePath = widget.event.image;
     _lastSavedEvent = widget.event;
+    _from = widget.event.from;
+    _to = widget.event.to;
   }
 
   @override
@@ -122,7 +124,9 @@ class _EventDetailsState extends State<EventDetails> {
         newPlace: _placeController.text,
         newDescription: _descriptionController.text,
         newTags: _tags,
-        newImagePath: _imagePath);
+        newImagePath: _imagePath,
+        newFrom: _from,
+        newTo: _to);
     if (event != _lastSavedEvent) {
       print("Something in the event changed. Upserting!");
       print(widget.event.toString());
@@ -171,7 +175,14 @@ class _EventDetailsState extends State<EventDetails> {
           updateMode: inUpdateMode,
           imagePath: _imagePath,
           onImagePick: onImagePick),
-      DateAndTimePicker(event: widget.event),
+      DateAndTimePicker(
+          inUpdateMode: inUpdateMode,
+          from: _from,
+          to: _to,
+          onChange: (start, end) => setState(() {
+                _from = start;
+                _to = end;
+              })),
       const Expanded(
         child: Text(""),
       ),

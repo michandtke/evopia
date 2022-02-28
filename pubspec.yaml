@@ -41,6 +41,7 @@ dependencies:
   image_picker: ^0.8.4+4
   flutter_svg: ^1.0.0
   scrollable_positioned_list: ^0.2.3
+  f_datetimerangepicker: ^0.2.0
 
 dev_dependencies:
   flutter_test:
