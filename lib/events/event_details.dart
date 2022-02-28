@@ -1,3 +1,4 @@
+import 'package:evopia/events/details/date_and_time_picker.dart';
 import 'package:evopia/events/details/event_details_description.dart';
 import 'package:evopia/events/details/event_details_place.dart';
 import 'package:evopia/events/details/event_details_title.dart';
@@ -148,11 +149,6 @@ class _EventDetailsState extends State<EventDetails> {
                 )));
   }
 
-  void _navigateToTimePicker() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => TimePicker()));
-  }
-
   Widget _topButton(void Function() onTap, IconData icon) {
     return InkWell(onTap: onTap, child: Icon(icon, color: Colors.black));
   }
@@ -175,7 +171,7 @@ class _EventDetailsState extends State<EventDetails> {
           updateMode: inUpdateMode,
           imagePath: _imagePath,
           onImagePick: onImagePick),
-      _dateAndTime(),
+      DateAndTimePicker(event: widget.event),
       const Expanded(
         child: Text(""),
       ),
@@ -194,16 +190,5 @@ class _EventDetailsState extends State<EventDetails> {
         _imagePath = newPath;
       });
     }
-  }
-
-  Widget _dateAndTimeContent() {
-    return Text(
-      DateFormatter().formatDates(widget.event.from, widget.event.to),
-      style: TextStyle(color: fontColor, fontSize: 20.0),
-    );
-  }
-
-  Widget _dateAndTime() {
-    return InkWell(child: _dateAndTimeContent(), onTap: _navigateToTimePicker);
   }
 }
