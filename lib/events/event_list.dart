@@ -33,6 +33,7 @@ class _EventListState extends State<EventList> {
   bool allEvents = false;
   bool myEvents = true;
   bool isInOldDates = false;
+  late DateTime previousDate;
 
   _EventListState(this.appliedFilters);
 
@@ -49,22 +50,27 @@ class _EventListState extends State<EventList> {
     if (shownEvents.isEmpty) {
       return const Text("No events where found.");
     }
-    int initialScrollIndex = PositionCalculator().calcPositionOfToday(shownEvents);
+    int initialScrollIndex =
+        PositionCalculator().calcPositionOfToday(shownEvents);
     print("initialScrollIndex: " + initialScrollIndex.toString());
 
-    DateTime previousDate = DateTime(0);
+    previousDate = DateTime(0);
+    print("Setting initial previous date: " + previousDate.toIso8601String());
     return ScrollablePositionedList.builder(
         key: UniqueKey(),
         itemCount: shownEvents.length,
         initialScrollIndex: initialScrollIndex,
         itemBuilder: (BuildContext ctxt, int index) {
-          return _singleEntryWithDateDivider(shownEvents, index, previousDate);
+          return _singleEntryWithDateDivider(shownEvents, index);
         });
   }
 
-  Widget _singleEntryWithDateDivider(
-      List<Event> shownEvents, int index, DateTime previousDate) {
+  Widget _singleEntryWithDateDivider(List<Event> shownEvents, int index) {
     var event = shownEvents[index];
+    print("Looking up if should devide for event " + event.name + ". Previous date: " +
+        previousDate.toIso8601String() +
+        " new date: " +
+        event.from.toIso8601String());
     if (event.from.isSameDate(previousDate)) {
       var entryWidget = eventEntry(event);
       return entryWidget;
@@ -83,7 +89,7 @@ class _EventListState extends State<EventList> {
 
   List<Event> calcShownEvents() {
     final filtered = filterOutOtherEvents(widget.events, appliedFilters);
-    filtered.sort((e1, e2) => e1.from.compareTo(e2.from));
+    filtered.sort((e1, e2) => e2.from.compareTo(e1.from));
     return filtered;
   }
 
@@ -151,7 +157,10 @@ class _EventListState extends State<EventList> {
 
   Widget eventEntry(Event event) {
     return EventCard(
-        event: event, upsertEvent: widget.upsertEvent, deleteEvent: widget.deleteEvent, context: context);
+        event: event,
+        upsertEvent: widget.upsertEvent,
+        deleteEvent: widget.deleteEvent,
+        context: context);
   }
 }
 

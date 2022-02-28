@@ -88,7 +88,7 @@ class _EventDetailsState extends State<EventDetails> {
         _page(),
         Positioned(
           left: 8.0,
-          top: 60.0,
+          top: 40.0,
           child: topButtons(),
         )
       ],
