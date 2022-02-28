@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import '../tags/tag.dart';
 import 'event.dart';
-import 'event_adder.dart';
 
 class EventDetails extends StatefulWidget {
   final Event event;
@@ -100,22 +99,11 @@ class _EventDetailsState extends State<EventDetails> {
     return Row(
       children: [
         _topButton(() => Navigator.pop(context), Icons.arrow_back),
-        _topButton(_navigateToEditEvent, Icons.edit),
-        _topButton(_stateChangeInlineUpdate, Icons.edit_attributes),
+        _topButton(_stateChangeInlineUpdate, Icons.edit),
         _topButton(_navigateToCopy, Icons.copy),
         _topButton(() => widget.deleteEvent(widget.event), Icons.delete)
       ],
     );
-  }
-
-  void _navigateToEditEvent() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EventAdder(
-                  fnAddEvent: widget.upsertEvent,
-                  oldEvent: widget.event,
-                )));
   }
 
   void _stateChangeInlineUpdate() {
@@ -147,9 +135,10 @@ class _EventDetailsState extends State<EventDetails> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => EventAdder(
-                  fnAddEvent: widget.upsertEvent,
-                  oldEvent: widget.event.copyWithoutId(),
+            builder: (context) => EventDetails(
+                  upsertEvent: widget.upsertEvent,
+                  deleteEvent: widget.deleteEvent,
+                  event: widget.event.copyWithoutId(),
                 )));
   }
 
