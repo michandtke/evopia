@@ -52,10 +52,8 @@ class _EventListState extends State<EventList> {
     }
     int initialScrollIndex =
         PositionCalculator().calcPositionOfToday(shownEvents);
-    print("initialScrollIndex: " + initialScrollIndex.toString());
 
     previousDate = DateTime(0);
-    print("Setting initial previous date: " + previousDate.toIso8601String());
     return ScrollablePositionedList.builder(
         key: UniqueKey(),
         itemCount: shownEvents.length,
@@ -67,10 +65,6 @@ class _EventListState extends State<EventList> {
 
   Widget _singleEntryWithDateDivider(List<Event> shownEvents, int index) {
     var event = shownEvents[index];
-    print("Looking up if should devide for event " + event.name + ". Previous date: " +
-        previousDate.toIso8601String() +
-        " new date: " +
-        event.from.toIso8601String());
     if (event.from.isSameDate(previousDate)) {
       var entryWidget = eventEntry(event);
       return entryWidget;

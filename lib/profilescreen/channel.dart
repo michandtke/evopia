@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'tag.g.dart';
+part 'channel.g.dart';
 
 @JsonSerializable()
-class Tag extends Equatable {
+class Channel extends Equatable {
   final String name;
 
-  const Tag({ required this.name});
+  const Channel({ required this.name});
 
   @override
   List<Object> get props => [name];
@@ -17,7 +17,7 @@ class Tag extends Equatable {
     return name;
   }
 
-  factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
+  factory Channel.fromJson(Map<String, dynamic> json) => _$ChannelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TagToJson(this);
+  Map<String, dynamic> toJson() => _$ChannelToJson(this);
 }

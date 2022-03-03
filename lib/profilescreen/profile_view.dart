@@ -1,11 +1,11 @@
 import 'package:evopia/loginscreen/credentials_model.dart';
 import 'package:evopia/tags/tag.dart';
-import 'package:evopia/tags/tag_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../picker.dart';
 import '../tags/tags_row.dart';
+import 'channel.dart';
 
 class ProfileView extends StatelessWidget {
   final void Function(Tag tag) addTag;
@@ -77,8 +77,8 @@ class ProfileView extends StatelessWidget {
     }
   }
 
-  Widget channels(List channels) {
-    return Column(children: channels.map((chan) => Text(chan)).toList());
+  Widget channels(List<Channel> channels) {
+    return Column(children: channels.map((chan) => Text(chan.name)).toList());
   }
 
   Widget _logout(CredentialsModel credentialsModel, BuildContext context) {

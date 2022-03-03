@@ -1,5 +1,5 @@
+import 'package:evopia/loginscreen/profile_store.dart';
 import 'package:evopia/loginscreen/register_view.dart';
-import 'package:evopia/tags/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,11 +36,10 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void Function(String, String) loginIn(CredentialsModel credentials) {
-    return (String username, String password) {
-      List<Tag> tags = [Tag(name: "Sport"), Tag(name: "Bouldern")];
-      var channels = ["0190111222333", "test@test.com", "INSTALINK"];
-      var image = "files/default_face.png";
-      credentials.loginIn(username, password, image, tags, channels);
+    return (String username, String password) async {
+      var profile = await ProfileStore().getProfile(username, password);
+      credentials.loginIn(
+          username, password, profile.image, profile.tags, profile.channels);
     };
   }
 
