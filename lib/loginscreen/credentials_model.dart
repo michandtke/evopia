@@ -40,6 +40,12 @@ class CredentialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addChannel(Channel channel) async {
+    channels.add(channel);
+    await _adjustProfile();
+    notifyListeners();
+  }
+
   Future<void> _adjustProfile() async {
     var newProfile = NewProfile(
         image: image,

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../picker.dart';
 import '../tags/tags_row.dart';
-import 'channel.dart';
+import 'channel_list.dart';
 
 class ProfileView extends StatelessWidget {
   final void Function(Tag tag) addTag;
@@ -36,7 +36,9 @@ class ProfileView extends StatelessWidget {
         Padding(
             padding: EdgeInsets.only(top: 80, left: 30),
             child: Text("CHANNELS")),
-        channels(credentials.channels),
+        ChannelList(
+            channels: credentials.channels,
+            fnAddChannel: credentials.addChannel),
         Padding(
             padding: const EdgeInsets.only(top: 80, left: 30),
             child: _tagsSection(credentials)),
@@ -75,10 +77,6 @@ class ProfileView extends StatelessWidget {
     if (imagePath != null) {
       changeImage(imagePath);
     }
-  }
-
-  Widget channels(List<Channel> channels) {
-    return Column(children: channels.map((chan) => Text(chan.name)).toList());
   }
 
   Widget _logout(CredentialsModel credentialsModel, BuildContext context) {
