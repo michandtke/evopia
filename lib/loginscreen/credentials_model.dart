@@ -50,7 +50,7 @@ class CredentialsModel extends ChangeNotifier {
     var newProfile = NewProfile(
         image: image,
         tags: tags,
-        channels: channels);
+        profileChannels: channels);
 
     var response = await ProfileStore()
         .upsertProfile(username, password, newProfile);

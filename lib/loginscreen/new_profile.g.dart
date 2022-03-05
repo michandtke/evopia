@@ -11,7 +11,7 @@ NewProfile _$NewProfileFromJson(Map<String, dynamic> json) => NewProfile(
       tags: (json['tags'] as List<dynamic>)
           .map((e) => Tag.fromJson(e as Map<String, dynamic>))
           .toList(),
-      channels: (json['channels'] as List<dynamic>)
+      profileChannels: (json['profileChannels'] as List<dynamic>)
           .map((e) => Channel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -20,5 +20,5 @@ Map<String, dynamic> _$NewProfileToJson(NewProfile instance) =>
     <String, dynamic>{
       'image': instance.image,
       'tags': instance.tags,
-      'channels': instance.channels,
+      'profileChannels': instance.profileChannels,
     };

@@ -9,12 +9,12 @@ part 'new_profile.g.dart';
 class NewProfile {
   final String image;
   final List<Tag> tags;
-  final List<Channel> channels;
+  final List<Channel> profileChannels;
 
   NewProfile(
       {required this.image,
       required this.tags,
-      required this.channels});
+      required this.profileChannels});
 
   factory NewProfile.fromJson(Map<String, dynamic> json) =>
       _$NewProfileFromJson(json);
