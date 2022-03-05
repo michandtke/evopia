@@ -117,6 +117,9 @@ class _EventListState extends State<EventList> {
   }
 
   Widget profileIconButton() {
+    if (widget.credentialsModel.image.isEmpty) {
+      return Container();
+    }
     return IconButton(
         icon: Image.asset(widget.credentialsModel.image),
         iconSize: 50,

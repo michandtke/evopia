@@ -61,6 +61,9 @@ class ProfileView extends StatelessWidget {
   }
 
   Widget image(String path, BuildContext context) {
+    if (path.isEmpty) {
+      return Container();
+    }
     return GestureDetector(
         onTap: () {
           newImage(context);
