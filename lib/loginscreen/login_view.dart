@@ -3,6 +3,7 @@ import 'package:evopia/loginscreen/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../user_store.dart';
 import 'credentials_model.dart';
 
 class LoginView extends StatefulWidget {
@@ -37,9 +38,9 @@ class _LoginViewState extends State<LoginView> {
 
   void Function(String, String) loginIn(CredentialsModel credentials) {
     return (String username, String password) async {
-      var profile = await ProfileStore().getProfile(username, password);
+      var profile = await UserStore().getUser(username, password);
       credentials.loginIn(
-          username, password, profile.image, profile.tags, profile.profileChannels);
+          username, password, profile.imagePath, profile.tags, profile.profileChannels);
     };
   }
 
