@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'channel.dart';
+import 'channel_provider.dart';
 
 class ChannelList extends StatelessWidget {
   final List<Channel> channels;
@@ -16,18 +17,42 @@ class ChannelList extends StatelessWidget {
   }
 
   Widget body() {
-    return Column(
-        children: [..._channelEntries(), TextButton(onPressed: _addChannel, child: const Text("ADD CHANNEL"))]);
+    return Column(children: [
+      ..._channelEntries(),
+      _addChannel()
+    ]);
   }
 
-  List<Text> _channelEntries() {
-    return channels
-          .map((chan) => Text(chan.name + ": " + chan.value))
-          .toList();
+  List<Widget> _channelEntries() {
+    return channels.map(_singleChannel).toList();
   }
 
-  _addChannel() {
-    var newChannel = const Channel(name: "Instagram", value: "0160");
-    fnAddChannel(newChannel);
+  Widget _singleChannel(Channel channel) {
+    return Padding(
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [Text(channel.name), Text(channel.value)]),
+        padding: const EdgeInsets.only(left: 20, right: 20));
+  }
+
+  Widget _addChannel() {
+    List<String> alreadyAssignedChannelNames =
+        channels.map((chan) => chan.name).toList();
+    var possibleChannels =
+        ChannelProvider().provideExcept(alreadyAssignedChannelNames);
+    return DropdownButton<Channel>(
+      hint: const Chip(label: Icon(Icons.add_sharp)),
+      icon: Container(),
+      underline: Container(),
+      items: possibleChannels
+          .map((channel) => DropdownMenuItem<Channel>(
+              value: channel, child: Text(channel.name)))
+          .toList(),
+      onChanged: (channel) {
+        if (channel != null) {
+          fnAddChannel(channel);
+        }
+      },
+    );
   }
 }

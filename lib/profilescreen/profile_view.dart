@@ -27,15 +27,17 @@ class ProfileView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(padding: EdgeInsets.only(top: 50)),
+        const Padding(padding: const EdgeInsets.only(top: 50)),
         image(credentials.image, context),
         Padding(
-          padding: EdgeInsets.only(top: 30, left: 30),
+          padding: const EdgeInsets.only(top: 30, left: 30),
           child: Text("Hello ${credentials.username}, nice to see you."),
         ),
-        Padding(
+        const Padding(
             padding: EdgeInsets.only(top: 80, left: 30),
-            child: Text("CHANNELS")),
+            child: Text("How to reach",
+                style: TextStyle(
+                    decoration: TextDecoration.underline, wordSpacing: 5))),
         ChannelList(
             channels: credentials.channels,
             fnAddChannel: credentials.addChannel),
