@@ -1,4 +1,3 @@
-import 'package:evopia/loginscreen/profile_store.dart';
 import 'package:evopia/loginscreen/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

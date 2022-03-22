@@ -3,8 +3,6 @@ import 'package:evopia/user_store.dart';
 import 'package:flutter/material.dart';
 
 import '../profilescreen/channel.dart';
-import 'new_profile.dart';
-import 'profile_store.dart';
 
 class CredentialsModel extends ChangeNotifier {
   var username = "";
@@ -37,26 +35,14 @@ class CredentialsModel extends ChangeNotifier {
 
   void changeImage(String path) async {
     image = path;
-    await _adjustProfile();
+    await UserStore().upsertImage(username, password, image);
     notifyListeners();
   }
 
   void addChannel(Channel channel) async {
     channels.add(channel);
-    await _adjustProfile();
+    await UserStore().upsertChannels(username, password, channels);
     notifyListeners();
-  }
-
-  Future<void> _adjustProfile() async {
-    var newProfile = NewProfile(
-        image: image,
-        tags: tags,
-        profileChannels: channels);
-
-    var response = await ProfileStore()
-        .upsertProfile(username, password, newProfile);
-
-    print(response.body);
   }
 
   bool isLoggedIn() {
