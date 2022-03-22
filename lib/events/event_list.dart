@@ -117,13 +117,17 @@ class _EventListState extends State<EventList> {
   }
 
   Widget profileIconButton() {
-    if (widget.credentialsModel.image.isEmpty) {
-      return Container();
-    }
     return IconButton(
-        icon: Image.asset(widget.credentialsModel.image),
+        icon: profileIcon(),
         iconSize: 50,
         onPressed: _navigateToProfilePage);
+  }
+
+  Widget profileIcon() {
+    if (widget.credentialsModel.image.isEmpty) {
+      return const Icon(Icons.person);
+    }
+    return Image.asset(widget.credentialsModel.image);
   }
 
   void _navigateToProfilePage() {

@@ -28,7 +28,7 @@ class ProfileView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Padding(padding: const EdgeInsets.only(top: 50)),
-        image(credentials.image, context),
+        imageButton(credentials.image, context),
         Padding(
           padding: const EdgeInsets.only(top: 30, left: 30),
           child: Text("Hello ${credentials.username}, nice to see you."),
@@ -62,15 +62,19 @@ class ProfileView extends StatelessWidget {
     ]);
   }
 
-  Widget image(String path, BuildContext context) {
-    if (path.isEmpty) {
-      return Container();
-    }
+  Widget imageButton(String path, BuildContext context) {
     return GestureDetector(
         onTap: () {
           newImage(context);
         }, // Image tapped
-        child: Center(child: Image.asset(path)));
+        child: Center(child: image(path)));
+  }
+
+  Widget image(String path) {
+    if (path.isEmpty) {
+      return const Icon(Icons.person);
+    }
+    return Image.asset(path);
   }
 
   newImage(BuildContext context) async {
