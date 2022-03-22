@@ -1,4 +1,5 @@
 import 'package:evopia/tags/tag.dart';
+import 'package:evopia/user_store.dart';
 import 'package:flutter/material.dart';
 
 import '../profilescreen/channel.dart';
@@ -24,13 +25,13 @@ class CredentialsModel extends ChangeNotifier {
 
   void addTag(Tag tag) async {
     tags.add(tag);
-    await _adjustProfile();
+    await UserStore().upsertTags(username, password, tags);
     notifyListeners();
   }
 
   void removeTag(Tag tag) async {
     tags.remove(tag);
-    await _adjustProfile();
+    await UserStore().upsertTags(username, password, tags);
     notifyListeners();
   }
 
