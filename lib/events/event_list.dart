@@ -88,11 +88,11 @@ class _EventListState extends State<EventList> {
   }
 
   List<Event> filterOutOtherEvents(
-      List<Event> allEvents, List<Tag> appliedFilter) {
-    if (appliedFilter.isEmpty) {
-      return allEvents;
-    }
-    return allEvents
+      List<Event> events, List<Tag> appliedFilter) {
+    if (allEvents) return events;
+    if (appliedFilter.isEmpty) return List.empty();
+
+    return events
         .where((element) =>
             element.tags.where((t) => appliedFilter.contains(t)).isNotEmpty)
         .toList();
@@ -118,9 +118,7 @@ class _EventListState extends State<EventList> {
 
   Widget profileIconButton() {
     return IconButton(
-        icon: profileIcon(),
-        iconSize: 50,
-        onPressed: _navigateToProfilePage);
+        icon: profileIcon(), iconSize: 50, onPressed: _navigateToProfilePage);
   }
 
   Widget profileIcon() {
