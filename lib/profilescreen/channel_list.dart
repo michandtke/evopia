@@ -1,3 +1,4 @@
+import 'package:evopia/profilescreen/channel_single.dart';
 import 'package:flutter/material.dart';
 
 import 'channel.dart';
@@ -17,22 +18,11 @@ class ChannelList extends StatelessWidget {
   }
 
   Widget body() {
-    return Column(children: [
-      ..._channelEntries(),
-      _addChannel()
-    ]);
+    return Column(children: [..._channelEntries(), _addChannel()]);
   }
 
   List<Widget> _channelEntries() {
-    return channels.map(_singleChannel).toList();
-  }
-
-  Widget _singleChannel(Channel channel) {
-    return Padding(
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [Text(channel.name), Text(channel.value)]),
-        padding: const EdgeInsets.only(left: 20, right: 20));
+    return channels.map((chan) => ChannelSingle(channel: chan)).toList();
   }
 
   Widget _addChannel() {
