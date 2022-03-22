@@ -1,13 +1,10 @@
 import 'package:evopia/events/start_end_duration_picker.dart';
-import 'package:evopia/images/event_image.dart';
 import 'package:evopia/images/pickable_image.dart';
 import 'package:evopia/tags/tag_provider.dart';
 import 'package:flutter/material.dart';
-
-import '../picker.dart';
-import 'event.dart';
-
 import 'package:image_picker/image_picker.dart';
+
+import 'event.dart';
 
 class EventAdder extends StatefulWidget {
   final Function fnAddEvent;

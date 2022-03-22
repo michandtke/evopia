@@ -19,36 +19,33 @@ class ProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(body:
         Consumer<CredentialsModel>(builder: (context, credentials, child) {
-      return body(credentials, context);
+      return _body(credentials, context);
     }));
   }
 
-  Widget body(CredentialsModel credentials, BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Padding(padding: const EdgeInsets.only(top: 50)),
-        imageButton(credentials.image, context),
-        Padding(
-          padding: const EdgeInsets.only(top: 30, left: 30),
-          child: Text("Hello ${credentials.username}, nice to see you."),
-        ),
-        const Padding(
-            padding: EdgeInsets.only(top: 80, left: 30),
-            child: Text("How to reach",
-                style: TextStyle(
-                    decoration: TextDecoration.underline, wordSpacing: 5))),
-        ChannelList(
-            channels: credentials.channels,
-            fnAddChannel: credentials.addChannel),
-        Padding(
-            padding: const EdgeInsets.only(top: 80, left: 30),
-            child: _tagsSection(credentials)),
-        Padding(
-            padding: const EdgeInsets.only(top: 10, left: 30),
-            child: _logout(credentials, context)),
-      ],
-    );
+  Widget _body(CredentialsModel credentials, BuildContext context) {
+    return ListView(children: [
+      const Padding(padding: EdgeInsets.only(top: 50)),
+      imageButton(credentials.image, context),
+      Padding(
+        padding: const EdgeInsets.only(top: 30, left: 30),
+        child: Text("Hello ${credentials.username}, nice to see you."),
+      ),
+      const Padding(
+          padding: EdgeInsets.only(top: 80, left: 30),
+          child: Text("How to reach",
+              style: TextStyle(
+                  decoration: TextDecoration.underline, wordSpacing: 5))),
+      ChannelList(
+          channels: credentials.channels,
+          fnAddChannel: credentials.addChannel),
+      Padding(
+          padding: const EdgeInsets.only(top: 80, left: 30),
+          child: _tagsSection(credentials)),
+      Padding(
+          padding: const EdgeInsets.only(top: 10, left: 30),
+          child: _logout(credentials, context)),
+    ]);
   }
 
   Widget _tagsSection(CredentialsModel credentials) {
