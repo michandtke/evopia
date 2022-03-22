@@ -5,10 +5,10 @@ import 'channel_provider.dart';
 
 class ChannelList extends StatelessWidget {
   final List<Channel> channels;
-  final void Function(Channel channel) fnAddChannel;
+  final void Function(Channel channel) fnUpsertChannel;
 
   const ChannelList(
-      {Key? key, required this.channels, required this.fnAddChannel})
+      {Key? key, required this.channels, required this.fnUpsertChannel})
       : super(key: key);
 
   @override
@@ -50,7 +50,7 @@ class ChannelList extends StatelessWidget {
           .toList(),
       onChanged: (channel) {
         if (channel != null) {
-          fnAddChannel(channel);
+          fnUpsertChannel(channel);
         }
       },
     );

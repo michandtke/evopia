@@ -9,7 +9,7 @@ class CredentialsModel extends ChangeNotifier {
   var password = "";
   var image = "";
   List<Tag> tags = [];
-  List<Channel> channels = [];
+  Map<String, Channel> channels = {};
 
   void loginIn(String username, String password, String image, List<Tag> tags,
       List<Channel> channels) {
@@ -17,7 +17,8 @@ class CredentialsModel extends ChangeNotifier {
     this.password = password;
     this.image = image;
     this.tags = tags;
-    this.channels = channels;
+    this.channels =
+        channels.asMap().map((key, value) => MapEntry(value.name, value));
     notifyListeners();
   }
 
@@ -39,9 +40,9 @@ class CredentialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addChannel(Channel channel) async {
-    channels.add(channel);
-    await UserStore().upsertChannels(username, password, channels);
+  void upsertChannel(Channel channel) async {
+    channels.update(channel.name, (x) => channel, ifAbsent: () => channel);
+    UserStore().upsertChannels(username, password, channels.values.toList());
     notifyListeners();
   }
 
@@ -54,7 +55,7 @@ class CredentialsModel extends ChangeNotifier {
     password = "";
     image = "";
     tags = [];
-    channels = [];
+    channels = {};
     notifyListeners();
   }
 }
