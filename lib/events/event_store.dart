@@ -5,11 +5,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show Client, Response;
 
+import '../tags/tag.dart';
+
 class EventStore {
   final Client _client = Client();
-  final _baseUrl = Uri.parse('https://XXX.com/events');
+  final _baseUrl = Uri.parse('https://XXX.com/v2/events');
   final _singleUrl =
-      (id) => Uri.parse('https://XXX.com/events/$id');
+      (id) => Uri.parse('https://XXX.com/v2/events/$id');
 
   Future<Response> upsert(Event event, username, password) {
     Map data = {
@@ -44,7 +46,9 @@ class EventStore {
       onError(content);
       return List.empty();
     }
-    List<dynamic> json = _asJson(content)['_embedded']['events'];
+
+    var jsoned = _asJson(content);
+    List<dynamic> json = jsoned;
     var events = json.whereType<Map>().map((entry) {
       var id = entry['id'] ?? -1;
       var name = entry['name'] ?? "";
@@ -52,9 +56,10 @@ class EventStore {
       var from = DateTime.parse(entry['date']);
       var to = DateTime.parse(entry['time']);
       var place = entry['place'] ?? "";
-      var tags =
-          TagProvider().provideSome(entry['tags'].split(",") ?? List.empty());
-      var image = entry['image'] ?? "";
+      // var tags =
+      //     TagProvider().provideSome(entry['tags'].split(",") ?? List.empty());
+      List<Tag> tags = List.empty();
+      var image = entry['imagePath'] ?? "";
 
       return Event(
           id: id,
