@@ -22,7 +22,9 @@ class ChannelList extends StatelessWidget {
   }
 
   List<Widget> _channelEntries() {
-    return channels.map((chan) => ChannelSingle(channel: chan)).toList();
+    return channels
+        .map((chan) => ChannelSingle(channel: chan, fnSave: fnUpsertChannel))
+        .toList();
   }
 
   Widget _addChannel() {
