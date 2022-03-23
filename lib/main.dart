@@ -55,8 +55,8 @@ class MainScreen extends StatelessWidget {
     print("${response.statusCode}");
     print(response.body);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-            'Trying to add new user: ${response.statusCode.toString()} - '
+        content:
+            Text('Trying to add new user: ${response.statusCode.toString()} - '
                 '${response.body}')));
   }
 }
@@ -95,7 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
             '${response.body}')));
   }
 
-
   Center futureEventsList(Future<List<Event>> eventsFuture) {
     return Center(
         child: FutureBuilder(
@@ -110,12 +109,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     credentialsModel: widget.credentialsModel);
               }
               if (snapshot.hasError) {
-                return Column(children: [
-                  Text("Unfortunately, an error: ${snapshot.error}"),
-                  TextButton(
-                      onPressed: () => setState(() {}),
-                      child: const Text("RELOAD"))
-                ]);
+                return Padding(
+                    padding:
+                        const EdgeInsets.only(top: 50, left: 20, right: 20),
+                    child: Column(children: [
+                      Text("Unfortunately, an error: ${snapshot.error}"),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(snapshot.stackTrace.toString(),
+                              style: const TextStyle(fontSize: 10))),
+                      TextButton(
+                          onPressed: () => setState(() {}),
+                          child: const Text("RELOAD"))
+                    ]));
               }
               return const CircularProgressIndicator();
             }));
