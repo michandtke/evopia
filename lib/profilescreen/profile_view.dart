@@ -38,7 +38,8 @@ class ProfileView extends StatelessWidget {
                   decoration: TextDecoration.underline, wordSpacing: 5))),
       ChannelList(
           channels: credentials.channels.values.toList(),
-          fnUpsertChannel: credentials.upsertChannel),
+          fnUpsertChannel: credentials.upsertChannel,
+          fnDeleteChannel: credentials.deleteChannel),
       Padding(
           padding: const EdgeInsets.only(top: 80, left: 30),
           child: _tagsSection(credentials)),

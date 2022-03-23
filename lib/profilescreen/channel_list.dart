@@ -7,9 +7,13 @@ import 'channel_provider.dart';
 class ChannelList extends StatelessWidget {
   final List<Channel> channels;
   final void Function(Channel channel) fnUpsertChannel;
+  final void Function(Channel channel) fnDeleteChannel;
 
   const ChannelList(
-      {Key? key, required this.channels, required this.fnUpsertChannel})
+      {Key? key,
+      required this.channels,
+      required this.fnUpsertChannel,
+      required this.fnDeleteChannel})
       : super(key: key);
 
   @override
@@ -18,12 +22,19 @@ class ChannelList extends StatelessWidget {
   }
 
   Widget body() {
-    return Column(children: [..._channelEntries(), _addChannel()]);
+    return Column(children: [
+      ListView(shrinkWrap: true, children: [..._channelEntries()]),
+      _addChannel()
+    ]);
   }
 
   List<Widget> _channelEntries() {
     return channels
-        .map((chan) => ChannelSingle(channel: chan, fnSave: fnUpsertChannel))
+        .map((chan) => ChannelSingle(
+            key: Key(chan.name),
+            channel: chan,
+            fnSave: fnUpsertChannel,
+            fnDelete: fnDeleteChannel))
         .toList();
   }
 

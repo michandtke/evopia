@@ -46,6 +46,12 @@ class CredentialsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteChannel(Channel channel) async {
+    channels.removeWhere((key, value) => key == channel.name);
+    UserStore().upsertChannels(username, password, channels.values.toList());
+    notifyListeners();
+  }
+
   bool isLoggedIn() {
     return username.isNotEmpty && password.isNotEmpty;
   }
