@@ -99,11 +99,16 @@ class _EventDetailsState extends State<EventDetails> {
     return Row(
       children: [
         _topButton(() => Navigator.pop(context), Icons.arrow_back),
-        _topButton(_stateChangeInlineUpdate, Icons.edit),
+        _topButton(_stateChangeInlineUpdate, _editIcon()),
         _topButton(_navigateToCopy, Icons.copy),
         _topButton(() => widget.deleteEvent(widget.event), Icons.delete)
       ],
     );
+  }
+
+  IconData _editIcon() {
+    if (inUpdateMode) return Icons.save;
+    return Icons.edit;
   }
 
   void _stateChangeInlineUpdate() {
