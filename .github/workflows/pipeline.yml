@@ -5,15 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JAVA_VERSION: "11.0"
-      FLUTTER_VERSION: "2.0.0"
+      FLUTTER_VERSION: "2.8.0"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: $
+          java-version: ${{env.JAVA_VERSION}}
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: $
+          flutter-version: ${{env.FLUTTER_VERSION}}
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
@@ -21,4 +21,4 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/*.apk"
-          token: $
+          token: ${{ secrets.GITHUB_TOKEN }}
