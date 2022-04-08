@@ -1,5 +1,5 @@
 import 'package:evopia/events/event.dart';
-import 'package:evopia/tags/tag_provider.dart';
+import 'package:evopia/simple_config.dart';
 
 import 'dart:convert';
 
@@ -9,11 +9,13 @@ import '../tags/tag.dart';
 
 class EventStore {
   final Client _client = Client();
-  final _baseUrl = Uri.parse('https://XXX.com/v2/events');
+  final _baseUrl = Uri.parse(SimpleConfig.baseUrl + 'v2/events');
+  final _upsertUrl = Uri.parse(SimpleConfig.baseUrl + 'v2/events/upsert');
   final _singleUrl =
-      (id) => Uri.parse('https://XXX.com/v2/events/$id');
+      (id) => Uri.parse(SimpleConfig.baseUrl + 'v2/events/$id');
 
   Future<Response> upsert(Event event, username, password) {
+    var data2 = event.toJson();
     Map data = {
       'name': event.name,
       'description': event.description,
@@ -26,10 +28,11 @@ class EventStore {
     if (event.id != -1) {
       data.putIfAbsent('id', () => event.id);
     }
-    var body = json.encode(data);
+
+    var body = json.encode(data2);
     String basicAuth =
         'Basic ' + base64Encode(utf8.encode('$username:$password'));
-    return _client.post(_baseUrl,
+    return _client.post(_upsertUrl,
         headers: {
           "Authorization": basicAuth,
           "Content-Type": "application/json"

@@ -2,6 +2,7 @@ import 'package:evopia/events/event_list.dart';
 import 'package:evopia/loginscreen/new_user.dart';
 import 'package:evopia/loginscreen/user_store.dart';
 import 'package:evopia/picker.dart';
+import 'package:evopia/simple_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -39,15 +40,19 @@ class MyApp extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<CredentialsModel>(
-      builder: (context, credentials, child) {
-        if (credentials.isLoggedIn()) {
-          return MyHomePage(credentialsModel: credentials);
-          // return ProfileView();
-        }
-        return LoginView(fnAddNewUser: (user) => _addNewUser(user, context));
-      },
-    );
+    if (SimpleConfig.baseUrl.isNotEmpty) {
+      return Consumer<CredentialsModel>(
+        builder: (context, credentials, child) {
+          if (credentials.isLoggedIn()) {
+            return MyHomePage(credentialsModel: credentials);
+            // return ProfileView();
+          }
+          return LoginView(fnAddNewUser: (user) => _addNewUser(user, context));
+        },
+      );
+    } else {
+      return const Text("Fehler: Config nicht valide. Umgebungsvariablen nicht gesetzt?");
+    }
   }
 
   void _addNewUser(NewUser newUser, BuildContext context) async {

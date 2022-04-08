@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:evopia/profilescreen/channel.dart';
+import 'package:evopia/simple_config.dart';
 import 'package:evopia/tags/tag.dart';
 import 'package:http/http.dart';
 
@@ -9,13 +10,13 @@ import 'user.dart';
 class UserStore {
   final Client _client = Client();
   final _urlGetProfile =
-      Uri.parse('https://XXX.com/v2/user/profile');
+      Uri.parse(SimpleConfig.baseUrl + 'v2/user/profile');
   final _tagUrl =
-      Uri.parse('https://XXX.com/v2/user/tags');
+      Uri.parse(SimpleConfig.baseUrl + 'v2/user/tags');
   final _imagePathUrl =
-      Uri.parse('https://XXX.com/v2/user');
+      Uri.parse(SimpleConfig.baseUrl + 'v2/user');
   final _channelUrl =
-      Uri.parse('https://XXX.com/v2/user/channel');
+      Uri.parse(SimpleConfig.baseUrl + 'v2/user/channel');
 
   Future<User> getUser(username, password) async {
     String basicAuth =

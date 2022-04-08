@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:evopia/tags/tag.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'event.g.dart';
+
+@JsonSerializable()
 class Event extends Equatable {
   final int id;
   final String name;
@@ -55,4 +59,9 @@ class Event extends Equatable {
   @override
   List<Object> get props =>
       [id, name, description, from, to, tags, place, image];
+
+
+  factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EventToJson(this);
 }

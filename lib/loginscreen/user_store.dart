@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:evopia/simple_config.dart';
 import 'package:http/http.dart';
 
 import 'new_user.dart';
 
 class UserStore {
   final Client _client = Client();
-  final _baseUrl = Uri.parse('https://XXX.com/user/registration');
+  final _baseUrl = Uri.parse(SimpleConfig.baseUrl + 'user/registration');
 
   Future<Response> upsert(NewUser newUser) {
     Map data = {
