@@ -27,7 +27,7 @@ class EventCard extends StatelessWidget {
             child: Column(
           children: [
             Text(event.name, style: const TextStyle(fontSize: 40)),
-            EventImage(path: event.image, height: 120),
+            EventImage(path: event.imagePath, height: 120),
             Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                 child: Row(

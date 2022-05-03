@@ -45,7 +45,7 @@ class _EventDetailsState extends State<EventDetails> {
     _descriptionController =
         TextEditingController(text: widget.event.description);
     _tags = List.from(widget.event.tags);
-    _imagePath = widget.event.image;
+    _imagePath = widget.event.imagePath;
     _lastSavedEvent = widget.event;
     _from = widget.event.from;
     _to = widget.event.to;

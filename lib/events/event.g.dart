@@ -16,7 +16,7 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
           .map((e) => Tag.fromJson(e as Map<String, dynamic>))
           .toList(),
       place: json['place'] as String,
-      image: json['image'] as String,
+      imagePath: json['imagePath'] as String,
     );
 
 Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
@@ -26,6 +26,6 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'from': instance.from.toIso8601String(),
       'to': instance.to.toIso8601String(),
       'place': instance.place,
-      'image': instance.image,
+      'imagePath': instance.imagePath,
       'tags': instance.tags,
     };

@@ -40,7 +40,7 @@ class _EventAdderState extends State<EventAdder> {
     _placeController = TextEditingController(text: ev.place);
     _tagsController = TextEditingController(text: ev.tags.join(","));
     _fromController = TextEditingController(text: ev.from.toString());
-    imagePath = ev.image;
+    imagePath = ev.imagePath;
     _toController = TextEditingController(text: ev.to.toString());
   }
 
@@ -91,7 +91,7 @@ class _EventAdderState extends State<EventAdder> {
                       place: _placeController.text,
                       tags: TagProvider()
                           .provideSome(_tagsController.text.split(',')),
-                      image: path ?? "");
+                      imagePath: path ?? "");
                   widget.fnAddEvent(event);
                   Navigator.pop(context);
                 }

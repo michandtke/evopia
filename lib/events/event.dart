@@ -12,7 +12,7 @@ class Event extends Equatable {
   final DateTime from;
   final DateTime to;
   final String place;
-  final String image;
+  final String imagePath;
   final List<Tag> tags;
 
   Event(
@@ -23,7 +23,7 @@ class Event extends Equatable {
       required this.to,
       required this.tags,
       required this.place,
-      required this.image});
+      required this.imagePath});
 
   Event copyWithoutId() {
     return Event(
@@ -33,7 +33,7 @@ class Event extends Equatable {
         from: from,
         to: to,
         place: place,
-        image: image,
+        imagePath: imagePath,
         tags: tags);
   }
 
@@ -52,13 +52,13 @@ class Event extends Equatable {
         from: newFrom ?? from,
         to: newTo ?? to,
         place: newPlace ?? place,
-        image: newImagePath ?? image,
+        imagePath: newImagePath ?? imagePath,
         tags: newTags ?? tags);
   }
 
   @override
   List<Object> get props =>
-      [id, name, description, from, to, tags, place, image];
+      [id, name, description, from, to, tags, place, imagePath];
 
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);

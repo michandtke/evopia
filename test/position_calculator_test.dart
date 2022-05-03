@@ -67,6 +67,6 @@ Event _testEvent(DateTime to) {
       from: DateTime.utc(0),
       to: to,
       place: "Great place",
-      image: "",
+      imagePath: "",
       tags: List.empty());
 }

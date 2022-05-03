@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
             .add(const Duration(minutes: 60)),
         tags: List.empty(),
         place: "",
-        image: "");
+        imagePath: "");
   }
 
   void _upsertEvent(Event newEvent) async {
