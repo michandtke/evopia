@@ -8,16 +8,14 @@ part of 'user.dart';
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
       imagePath: json['imagePath'] as String,
-      tags: (json['tags'] as List<dynamic>)
-          .map((e) => Tag.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      profileChannels: (json['profileChannels'] as List<dynamic>)
-          .map((e) => Channel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      email: json['email'] as String,
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+      'email': instance.email,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
       'imagePath': instance.imagePath,
-      'tags': instance.tags,
-      'profileChannels': instance.profileChannels,
     };

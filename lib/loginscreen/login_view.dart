@@ -37,7 +37,7 @@ class _LoginViewState extends State<LoginView> {
 
   void Function(String, String) loginIn(CredentialsModel credentials) {
     return (String username, String password) async {
-      var profile = await UserStore().getUser(username, password);
+      var profile = await UserStore().getProfile(username, password);
       credentials.loginIn(
           username, password, profile.imagePath, profile.tags, profile.profileChannels);
     };

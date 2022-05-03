@@ -3,21 +3,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../profilescreen/channel.dart';
 
-part 'new_profile.g.dart';
+part 'profile.g.dart';
 
 @JsonSerializable()
-class NewProfile {
-  final String image;
+class Profile {
+  final String imagePath;
   final List<Tag> tags;
   final List<Channel> profileChannels;
 
-  NewProfile(
-      {required this.image,
+  Profile(
+      {required this.imagePath,
       required this.tags,
       required this.profileChannels});
 
-  factory NewProfile.fromJson(Map<String, dynamic> json) =>
-      _$NewProfileFromJson(json);
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NewProfileToJson(this);
+  Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }

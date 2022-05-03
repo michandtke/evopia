@@ -9,10 +9,10 @@ import '../tags/tag.dart';
 
 class EventStore {
   final Client _client = Client();
-  final _baseUrl = Uri.parse(SimpleConfig.baseUrl + 'v2/events');
-  final _upsertUrl = Uri.parse(SimpleConfig.baseUrl + 'v2/events/upsert');
+  final _baseUrl = Uri.parse(SimpleConfig.baseUrl + 'v3/events');
+  final _upsertUrl = Uri.parse(SimpleConfig.baseUrl + 'v3/events/upsert');
   final _singleUrl =
-      (id) => Uri.parse(SimpleConfig.baseUrl + 'v2/events/$id');
+      (id) => Uri.parse(SimpleConfig.baseUrl + 'v3/events/$id');
 
   Future<Response> upsert(Event event, username, password) {
     var data2 = event.toJson();
