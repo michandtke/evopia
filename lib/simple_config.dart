@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class SimpleConfig {
-  static const String baseUrl = String.fromEnvironment('EVOPIA_BASE_URL');
+  static String baseUrl = dotenv.env['EVOPIA_BASE_URL'] ?? "";
 }

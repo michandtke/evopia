@@ -1,9 +1,9 @@
 import 'package:evopia/events/event_list.dart';
 import 'package:evopia/loginscreen/new_user.dart';
 import 'package:evopia/loginscreen/user_store.dart';
-import 'package:evopia/picker.dart';
 import 'package:evopia/simple_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
@@ -12,9 +12,9 @@ import 'events/event_adder.dart';
 import 'events/event_store.dart';
 import 'loginscreen/credentials_model.dart';
 import 'loginscreen/login_view.dart';
-import 'profilescreen/profile_view.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
