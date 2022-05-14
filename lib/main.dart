@@ -14,7 +14,11 @@ import 'loginscreen/credentials_model.dart';
 import 'loginscreen/login_view.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env");
+  try {
+    await dotenv.load(fileName: ".env");
+  } on Error catch (e) {
+    print("No env file found: ${e.toString()}");
+  }
   runApp(const MyApp());
 }
 
@@ -51,7 +55,8 @@ class MainScreen extends StatelessWidget {
         },
       );
     } else {
-      return const Text("Fehler: Config nicht valide. Umgebungsvariablen nicht gesetzt?");
+      return const Text(
+          "Fehler: Config nicht valide. Umgebungsvariablen nicht gesetzt?");
     }
   }
 
