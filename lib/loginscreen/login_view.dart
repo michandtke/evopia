@@ -1,5 +1,7 @@
 import 'package:evopia/loginscreen/register_view.dart';
+import 'package:evopia/loginscreen/rotating_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 
 import '../user_store.dart';
@@ -29,29 +31,37 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:
+    return LoaderOverlay(
+        useDefaultLoading: false,
+        overlayWidget: Center(
+          child: RotatingLogo(),
+        ),
+        child: Scaffold(body:
         Consumer<CredentialsModel>(builder: (context, credentials, child) {
       return body(loginIn(credentials));
-    }));
+    })));
   }
 
   void Function(String, String) loginIn(CredentialsModel credentials) {
     return (String username, String password) async {
+      context.loaderOverlay.show();
       var profile = await UserStore().getProfile(username, password);
-      credentials.loginIn(
-          username, password, profile.imagePath, profile.tags, profile.profileChannels);
+      credentials.loginIn(username, password, profile.imagePath, profile.tags,
+          profile.profileChannels);
+      context.loaderOverlay.hide();
     };
   }
 
   Padding body(void Function(String, String) loginIn) {
     return Padding(
-        padding: const EdgeInsets.only(top: 150),
+        padding: const EdgeInsets.only(top: 70),
         child: Center(
             child: Column(children: [
+          Image.asset("assets/logo.jpg"),
           Text("Willkommen bei Mosaik"),
           form(loginIn),
           _register(),
-          Text("Password vergessen")
+          // Text("Password vergessen")
         ])));
   }
 

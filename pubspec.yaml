@@ -45,6 +45,7 @@ dependencies:
   json_serializable: ^6.1.4
   build_runner: ^2.1.7
   flutter_dotenv: ^5.0.2
+  loader_overlay: 2.0.6
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ flutter:
   assets:
     - assets/profiles/
     - assets/icons/
+    - assets/logo.jpg
     - .env
   #   - images/a_dot_ham.jpeg
 
